@@ -25,3 +25,21 @@ unsigned char USART_RX(){
 	
 	return UDR0;	
 }
+
+/*
+	Links printf to UART
+	Uses code from this source: 
+	https://www.nongnu.org/avr-libc/user-manual/group__avr__stdio.html#gaea2b6be92ead4673bc487b271b7227fb
+*/
+
+static FILE mystdout = FDEV_SETUP_STREAM(uart_putchar, NULL,
+                                         _FDEV_SETUP_WRITE);
+
+static int uart_putchar(char c, FILE *stream)
+{
+  if (c == '\n')
+    uart_putchar('\r', stream);
+  loop_until_bit_is_set(UCSR0A, UDRE0);
+  UDR0 = c;
+  return 0;
+}

@@ -18,6 +18,7 @@ int main(void)
 {
 	unsigned char test;
 	USART_Init(UBRR);
+	stdout = &mystdout;
 	test = 0;
 	while(1)
 	{
