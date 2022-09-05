@@ -1,4 +1,5 @@
 #include "test.h"
+#include "ATmega162_driver.h"
 
 void pin_test()
 {
@@ -13,5 +14,25 @@ void pin_test()
 		clear_bit(PORTB, 0);
 		
 		_delay_ms(500);
+	}
+}
+
+
+void uart_test()
+{
+	unsigned char test;
+	USART_Init(UBRR);
+	stdout = &mystdout;	
+
+	while(1)
+	{
+		test = USART_RX();
+		printf("%c", test);
+		_delay_ms(500);
+		
+		/*
+		test = USART_RX();
+		USART_TX(test);
+		*/
 	}
 }

@@ -6,3 +6,4 @@
 
 void pin_test();
 
+void uart_test();
