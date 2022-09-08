@@ -24,5 +24,13 @@ ISR(USART0_RXC_vect)
 
 int main(void)
 {
-	uart_interrupt_test();
+	stdout = &mystdout;
+	
+	USART_Init(UBRR);
+	
+	xmem_init();
+	SRAM_test();
+
+	
+	
 }

@@ -7,6 +7,7 @@
 #define FOSC 4915200//1843200
 #define BAUD 9600
 #define UBRR FOSC/16/BAUD-1
+#define BASE_ADDRESS 0x1800
 
 
 void USART_Init(unsigned int ubrr);
@@ -17,6 +18,12 @@ unsigned char USART_RX();
 
 FILE mystdout;
 int uart_putchar(char c, FILE *stream);
+
+void xmem_init(void);
+
+void xmem_write(uint8_t data, uint16_t addr);
+
+uint8_t xmem_read(uint16_t addr);
 
 
 
