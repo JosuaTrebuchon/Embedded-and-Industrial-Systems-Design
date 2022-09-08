@@ -1,5 +1,6 @@
 #include "test.h"
 #include "ATmega162_driver.h"
+#include <avr/interrupt.h>
 
 void pin_test()
 {
@@ -34,5 +35,18 @@ void uart_test()
 		test = USART_RX();
 		USART_TX(test);
 		*/
+	}
+}
+
+void uart_interrupt_test()
+{
+	unsigned char test;
+	stdout = &mystdout;
+	USART_Init(UBRR);
+	sei();
+
+	while(1)
+	{
+		
 	}
 }
