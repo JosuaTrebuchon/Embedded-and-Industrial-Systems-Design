@@ -12,3 +12,5 @@ void uart_test();
 void uart_interrupt_test();
 
 void SRAM_test(void);
+
+void decoder_test(void);

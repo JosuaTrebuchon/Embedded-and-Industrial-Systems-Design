@@ -86,3 +86,17 @@ void SRAM_test(void)
 	}
 	printf("SRAM test completed with \n%4d errors in write phase and \n%4d errors in retrieval phase\n\n", write_errors, retrieval_errors);
 }
+
+
+void decoder_test(void)
+{
+		
+	while(1)
+	{
+		xmem_write(0x51, 0x1800);
+		_delay_ms(500);
+		xmem_write(0x51, 0x1400);
+		_delay_ms(500);
+	}
+
+}

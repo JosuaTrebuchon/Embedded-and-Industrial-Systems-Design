@@ -29,8 +29,27 @@ int main(void)
 	USART_Init(UBRR);
 	
 	xmem_init();
-	SRAM_test();
-
+	
+	while(1)
+	{
+		SRAM_test();
+		_delay_ms(1000);
+	}
+	
+	
+	
+	//decoder_test();
+	/*
+	while(1)
+	{
+		xmem_write(0x52, 0x400);
+		_delay_ms(500);
+		xmem_write(0x52, 0x800);
+		_delay_ms(500);
+		
+	}
+	*/
+	
 	
 	
 }

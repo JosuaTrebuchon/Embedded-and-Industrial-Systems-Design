@@ -7,7 +7,7 @@
 #define FOSC 4915200//1843200
 #define BAUD 9600
 #define UBRR FOSC/16/BAUD-1
-#define BASE_ADDRESS 0x1800
+#define BASE_ADDRESS 0x1000
 
 
 void USART_Init(unsigned int ubrr);
