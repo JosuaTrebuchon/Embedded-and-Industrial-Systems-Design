@@ -136,6 +136,12 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ADC_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ADC_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="ATmega162_driver.c">
       <SubType>compile</SubType>
     </Compile>

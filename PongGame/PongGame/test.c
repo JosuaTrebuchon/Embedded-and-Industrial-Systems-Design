@@ -90,13 +90,22 @@ void SRAM_test(void)
 
 void decoder_test(void)
 {
-		
+
 	while(1)
 	{
 		xmem_write(0x51, 0x1800);
 		_delay_ms(500);
-		xmem_write(0x51, 0x1400);
+		
+		xmem_write(0x51, 0x1F00);
 		_delay_ms(500);
+		
+		xmem_write(0x51, 0x1FFF);
+		_delay_ms(500);
+		
+		xmem_write(0x51, 0x1600);
+			_delay_ms(500);
+			
 	}
 
 }
+

@@ -51,8 +51,12 @@ void xmem_init(void)
 
 void xmem_write (uint8_t data , uint16_t addr)
 {
+	stdout = &mystdout;
 	volatile char * ext_mem = (char *) BASE_ADDRESS;
 	ext_mem [addr]= data ;
+	uint8_t retreived_value = ext_mem[addr];
+	printf( "value stored at ext_mem[0x%08x] is 0x%08x, should be 0x%08x\n", addr, retreived_value, data);
+
 }uint8_t xmem_read (uint16_t addr)
 {
 	volatile char * ext_mem = (char *) BASE_ADDRESS;
