@@ -44,18 +44,22 @@ int uart_putchar(char c, FILE *stream)
 
 void xmem_init(void)
 {
-	set_bit(MCUCR, SRE);
-	
-	set_bit(SFIOR, XMM2);
+	//set_bit(SFIOR, XMM2);
+	//clear_bit(SFIOR, XMM1);
+	//clear_bit(SFIOR, XMM0);
+	//set_bit(MCUCR, SRE);
+	MCUCR |= (1<< SRE); //THIS MFER
+	SFIOR |= (1<< XMM2);
 }
 
 void xmem_write (uint8_t data , uint16_t addr)
 {
+
 	stdout = &mystdout;
 	volatile char * ext_mem = (char *) BASE_ADDRESS;
 	ext_mem [addr]= data ;
 	uint8_t retreived_value = ext_mem[addr];
-	printf( "value stored at ext_mem[0x%08x] is 0x%08x, should be 0x%08x\n", addr, retreived_value, data);
+	//printf( "value stored at ext_mem[0x%08x] is 0x%08x, should be 0x%08x\n", addr, retreived_value, data);
 
 }uint8_t xmem_read (uint16_t addr)
 {
