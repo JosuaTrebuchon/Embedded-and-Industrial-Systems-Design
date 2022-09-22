@@ -9,6 +9,7 @@
 #define UBRR FOSC/16/BAUD-1
 #define BASE_ADDRESS 0x0000
 
+double dutyCircle;
 
 void USART_Init(unsigned int ubrr);
 

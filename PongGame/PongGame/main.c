@@ -12,16 +12,17 @@
 #include <util/delay.h>
 #include "test.h"
 #include "ATmega162_driver.h"
-#include "ADC_driver.h"
 #include <avr/interrupt.h>
+#include "ADC_driver.h"
+#include "p1000_driver.h" 
 
-double dutyCircle = 50;
+uint8_t ADC_data [4];
 
 ISR(USART0_RXC_vect)
 {
-   char ReceivedByte;
-   ReceivedByte = UDR0; // Fetch the received byte value into the variable "ByteReceived"
-   UDR0 = ReceivedByte; // Echo back the received byte back to the computer
+	char ReceivedByte;
+	ReceivedByte = UDR0; // Fetch the received byte value into the variable "ByteReceived"
+	UDR0 = ReceivedByte; // Echo back the received byte back to the computer
 }
 
 ISR(TIMER1_OVF_vect)
@@ -31,90 +32,61 @@ ISR(TIMER1_OVF_vect)
 
 ISR(INT2_vect)
 {
-	ADC_read();
-	xmem_write(0x52, 0x1400);
-// 	stdout = &mystdout;
-// 	printf("Busy\n");
-}
+	ADC_read(ADC_data);
+	// xmem_write(0x52, 0x1400);
 
-void PWM_Init()
-{
-	//DDRD |= (1 << PD5);
-	set_bit(DDRD, DDD5);
-	
-	/* Fast PWM, TOP value = ICR1 */
-	set_bit(TCCR1B, WGM13);
-	set_bit(TCCR1B, WGM12);
-	set_bit(TCCR1A, WGM11);
-	clear_bit(TCCR1A, WGM10);
-	
-	set_bit(TCCR1A, COM1A1);
-	clear_bit(TCCR1A, COM1A0);
-	
-	set_bit(TIMSK, TOIE1);
 }
-
 
 int main(void)
 {
+	int x_per;
+	int y_per;
+	pos_t position;
+	
+	dutyCircle = 50;
+	// ADC_data = {0,0,0,0};
+	(x_per) = 0;
+	(y_per) = 0;
 	
 	stdout = &mystdout;
 
-		USART_Init(UBRR);
+	USART_Init(UBRR);
 		
-		xmem_init();
+	xmem_init();
 		
-		PWM_Init();
-		ADC_init();
+	PWM_Init();
+	ADC_init();
 		
-		ICR1 = 1;
+	sei(); // Enable all interrupt
 		
-		OCR1A = (dutyCircle/100.0)*ICR1;
-		
-		sei(); // Enable all interrupt
-		
-		clear_bit(TCCR1B, CS12);
-		clear_bit(TCCR1B, CS11);
-		set_bit(TCCR1B, CS10);
-		
-		
-		// decoder_test();
-		//SRAM_test();
-// 	while(1)
-// 	{
-// 		//decoder_test();
-// 		// xmem_write(0x51, 0x1400); /* Chip select CS turned on for ADC */
-// 		
-// 		/* Write signal turned on to initiate data sampling */
-// // 		set_bit(PORTD, PD6);
-// // 		_delay_ms(100);
-// // 		clear_bit(PORTD, PD6);
-// 		_delay_ms(100);
-// 		
-// 	}
-	
-	
 	while(1)
 	{
-		//SRAM_test();
-		//_delay_ms(5000);
-		xmem_init();
+		//_delay_ms(100);
+		joystick_analog_position(&x_per, &y_per, ADC_data);
+		position = pos_read(&x_per, &y_per);
+		
+		switch(position)
+		{
+			case UP:
+				printf("UP\n");
+				break;
+			case DOWN:
+				printf("DOWN\n");
+				break;
+			case RIGHT:
+				printf("RIGTH\n");
+				break;
+			case LEFT:
+				printf("LEFT\n");
+				break;
+			case NEUTRAL:
+				printf("NEUTRAL\n");
+				break;
+			default:
+				printf("Not working ?\n");
+				break;
+		}
+			
 	}
-//  	
-// 	xmem_write(0x00, 0x1800);
-// 	clear_bit(PINC, PINC3);
-// 	xmem_write(0x00, 0x1400);
-// 	xmem_write(0x00, 0x1700);
-// 	xmem_write(0x00, 0x1800);
-	/*while(1)
-	{
-		
-		//ADC_read();
-		//
-		//_delay_ms(500);
-		
-	}*/
-	
-	
 	
 }

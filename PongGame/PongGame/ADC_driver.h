@@ -6,11 +6,11 @@
 
 #include <util/delay.h>
 
-
+void PWM_Init();
 
 void ADC_init(void);
 
-void ADC_read(void);
+void ADC_read(uint8_t* ADC_data);
 
 //uint8_t adc_read(uint8_t channel); //volatile
 

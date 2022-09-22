@@ -109,3 +109,35 @@ void decoder_test(void)
 
 }
 
+
+void ADC_test() 
+{
+		double dutyCircle = 50;
+		
+		stdout = &mystdout;
+		
+		USART_Init(UBRR);
+		
+		xmem_init();
+		
+		PWM_Init();
+		ADC_init();
+		
+		ICR1 = 1;
+		
+		OCR1A = (dutyCircle/100.0)*ICR1;
+		
+		sei(); // Enable all interrupt
+		
+		clear_bit(TCCR1B, CS12);
+		clear_bit(TCCR1B, CS11);
+		set_bit(TCCR1B, CS10);
+		
+		xmem_write(0x00, 0x1400);
+		while(1)
+		{
+			/* Interrupt handling */
+			//ADC_read();
+			//xmem_write(0x00, 0x1400);
+		}
+}
