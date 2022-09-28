@@ -15,6 +15,7 @@
 #include <avr/interrupt.h>
 #include "ADC_driver.h"
 #include "p1000_driver.h" 
+#include "OLED_driver.h"
 
 uint8_t ADC_data [4];
 
@@ -39,15 +40,18 @@ ISR(INT2_vect)
 
 int main(void)
 {
-	int x_per;
-	int y_per;
-	pos_t position;
-	
+				float x_per;
+				float y_per;
+				pos_t position;
+				int calibrated = 0;
+				dutyCircle = 50;
+				// ADC_data = {0,0,0,0};
+				(x_per) = 0;
+				(y_per) = 0;
+
 	dutyCircle = 50;
 	// ADC_data = {0,0,0,0};
-	(x_per) = 0;
-	(y_per) = 0;
-	
+
 	stdout = &mystdout;
 
 	USART_Init(UBRR);
@@ -58,35 +62,44 @@ int main(void)
 	ADC_init();
 		
 	sei(); // Enable all interrupt
-		
+	int delay = 1;
+	
+	oled_init();
+	_delay_ms(delay);
+	
+	
+	/*xmem_write(0x2f, 0x1000);
+*/
+/*	xmem_write(0xb1, 0x1000);
+	xmem_write(0x00, 0x1000);
+	xmem_write(0xb2, 0x1000);
+	xmem_write(0x00, 0x1000);
+	*/
+	//xmem_write(0x40, 0x1000);
 	while(1)
 	{
-		//_delay_ms(100);
-		joystick_analog_position(&x_per, &y_per, ADC_data);
-		position = pos_read(&x_per, &y_per);
+		//xmem_write(0xae, 0x1000); // display off
+		// xmem_write(0xff, 0x1000);
 		
-		switch(position)
-		{
-			case UP:
-				printf("UP\n");
-				break;
-			case DOWN:
-				printf("DOWN\n");
-				break;
-			case RIGHT:
-				printf("RIGTH\n");
-				break;
-			case LEFT:
-				printf("LEFT\n");
-				break;
-			case NEUTRAL:
-				printf("NEUTRAL\n");
-				break;
-			default:
-				printf("Not working ?\n");
-				break;
-		}
-			
+		xmem_write(0xff, 0x1200);
+		_delay_ms(delay);
+		xmem_write(0x00, 0x1200); // display on
+		//_delay_ms(delay);
 	}
 	
 }
+
+/*
+			float x_per;
+			float y_per;
+			pos_t position;
+			int calibrated = 0;
+			dutyCircle = 50;
+			// ADC_data = {0,0,0,0};
+			(x_per) = 0;
+			(y_per) = 0;
+		joystick_analog_position(&x_per, &y_per, ADC_data, &calibrated);
+		position = pos_read(&x_per, &y_per);
+		
+		slider_position(&x_per, &y_per, ADC_data);
+		*/

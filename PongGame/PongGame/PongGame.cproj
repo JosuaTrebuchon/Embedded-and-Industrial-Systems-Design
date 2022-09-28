@@ -154,6 +154,12 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="OLED_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="OLED_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="p1000_driver.c">
       <SubType>compile</SubType>
     </Compile>

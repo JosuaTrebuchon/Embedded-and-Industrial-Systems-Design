@@ -6,20 +6,35 @@
  */ 
 
 #include "p1000_driver.h" 
-
-int joystick_calibrate = 128;void joystick_analog_position(int* x_per, int* y_per, uint8_t* ADC_data)
+
+float x_joystick_calibrate=128; 
+float y_joystick_calibrate=128; void joystick_analog_position(float* x_per, float* y_per, uint8_t* ADC_data, int* calibrated)
 {
 	xmem_write(0x52, 0x1400);
-	
-	printf( "ADC_data[%d] = %d, ADC_data[%d] = %d\n", 0, (int)ADC_data [0],3, (int)ADC_data [3]);
-	*x_per = ((ADC_data[0] - joystick_calibrate) / joystick_calibrate) *100; //fix this
-	*y_per = ((ADC_data[3] - joystick_calibrate) / joystick_calibrate) *100; //fix this
-	printf("%d\n",*x_per);
-	printf("%d\n",*y_per);
-	//printf("pos check ?\n");
+	/*
+	if(!(*calibrated))
+	{
+		x_joystick_calibrate = ADC_data[3];
+		y_joystick_calibrate = ADC_data[0];
+		
+		*calibrated = 1;
+	}
+	*/
+
+	*x_per = ((float)ADC_data[3]*(float)(200.0/255.0)-100);
+	*y_per = ((float)ADC_data[0]*(float)(200.0/255.0)-100);
+
 }
 
-pos_t pos_read(int* x_per, int* y_per)
+void slider_position(float *left_per, float *right_per, uint8_t* ADC_data)
+{
+	xmem_write(0x52, 0x1400);
+	//printf( "ADC_data[%d] = %d, ADC_data[%d] = %d\n", 1, (int)ADC_data [1],2, (int)ADC_data [2]);
+}
+
+
+
+pos_t pos_read(float* x_per, float* y_per)
 {
 	if((*x_per) >= 70)
 	{
@@ -41,4 +56,26 @@ pos_t pos_read(int* x_per, int* y_per)
 	return NEUTRAL;
 	
 }
-
+/*
+switch(position)
+{
+	case UP:
+	printf("UP\n");
+	break;
+	case DOWN:
+	printf("DOWN\n");
+	break;
+	case RIGHT:
+	printf("RIGHT\n");
+	break;
+	case LEFT:
+	printf("LEFT\n");
+	break;
+	case NEUTRAL:
+	printf("NEUTRAL\n");
+	break;
+	default:
+	printf("Not working ?\n");
+	break;
+}
+*/
