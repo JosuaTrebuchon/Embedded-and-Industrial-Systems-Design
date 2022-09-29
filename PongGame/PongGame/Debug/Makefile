@@ -39,6 +39,7 @@ SUBDIRS :=
 C_SRCS +=  \
 ../ADC_driver.c \
 ../ATmega162_driver.c \
+../fonts.c \
 ../main.c \
 ../OLED_driver.c \
 ../p1000_driver.c \
@@ -54,6 +55,7 @@ ASM_SRCS +=
 OBJS +=  \
 ADC_driver.o \
 ATmega162_driver.o \
+fonts.o \
 main.o \
 OLED_driver.o \
 p1000_driver.o \
@@ -62,6 +64,7 @@ test.o
 OBJS_AS_ARGS +=  \
 ADC_driver.o \
 ATmega162_driver.o \
+fonts.o \
 main.o \
 OLED_driver.o \
 p1000_driver.o \
@@ -70,6 +73,7 @@ test.o
 C_DEPS +=  \
 ADC_driver.d \
 ATmega162_driver.d \
+fonts.d \
 main.d \
 OLED_driver.d \
 p1000_driver.d \
@@ -78,6 +82,7 @@ test.d
 C_DEPS_AS_ARGS +=  \
 ADC_driver.d \
 ATmega162_driver.d \
+fonts.d \
 main.d \
 OLED_driver.d \
 p1000_driver.d \
@@ -105,6 +110,13 @@ LINKER_SCRIPT_DEP+=
 	
 
 ./ATmega162_driver.o: .././ATmega162_driver.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega162 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\atmega162" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./fonts.o: .././fonts.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega162 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\atmega162" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

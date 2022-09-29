@@ -6,6 +6,8 @@ ADC_driver.c
 
 ATmega162_driver.c
 
+fonts.c
+
 main.c
 
 OLED_driver.c

@@ -56,26 +56,3 @@ pos_t pos_read(float* x_per, float* y_per)
 	return NEUTRAL;
 	
 }
-/*
-switch(position)
-{
-	case UP:
-	printf("UP\n");
-	break;
-	case DOWN:
-	printf("DOWN\n");
-	break;
-	case RIGHT:
-	printf("RIGHT\n");
-	break;
-	case LEFT:
-	printf("LEFT\n");
-	break;
-	case NEUTRAL:
-	printf("NEUTRAL\n");
-	break;
-	default:
-	printf("Not working ?\n");
-	break;
-}
-*/

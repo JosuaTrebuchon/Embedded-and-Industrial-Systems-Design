@@ -7,7 +7,7 @@
 
 #define F_CPU 4915200
 //#define BAUD 9600
-
+#include "OLED_driver.h"
 #include <avr/io.h>
 #include <util/delay.h>
 #include "test.h"
@@ -15,9 +15,8 @@
 #include <avr/interrupt.h>
 #include "ADC_driver.h"
 #include "p1000_driver.h" 
-#include "OLED_driver.h"
 
-uint8_t ADC_data [4];
+extern uint8_t ADC_data [4];
 
 ISR(USART0_RXC_vect)
 {
@@ -40,17 +39,20 @@ ISR(INT2_vect)
 
 int main(void)
 {
-				float x_per;
-				float y_per;
-				pos_t position;
-				int calibrated = 0;
-				dutyCircle = 50;
-				// ADC_data = {0,0,0,0};
-				(x_per) = 0;
-				(y_per) = 0;
-
+			
+	int page_arrow;
+	int y_arrow;
+	uint8_t size_arrow;
+	
+	float x_per;
+	float y_per;
+	pos_t position;
+	int calibrated = 0;
 	dutyCircle = 50;
-	// ADC_data = {0,0,0,0};
+
+	(x_per) = 0;
+	(y_per) = 0;
+
 
 	stdout = &mystdout;
 
@@ -62,44 +64,65 @@ int main(void)
 	ADC_init();
 		
 	sei(); // Enable all interrupt
-	int delay = 1;
+
+	size_arrow = 1;
+	page_arrow = 0;
+	y_arrow = 0;
 	
 	oled_init();
-	_delay_ms(delay);
+	oled_home();
+	oled_reset();
+	//oled_home();
+	
+	//oled_print_arrow(page_arrow, y_arrow, 0);
 	
 	
-	/*xmem_write(0x2f, 0x1000);
-*/
-/*	xmem_write(0xb1, 0x1000);
-	xmem_write(0x00, 0x1000);
-	xmem_write(0xb2, 0x1000);
-	xmem_write(0x00, 0x1000);
-	*/
-	//xmem_write(0x40, 0x1000);
-	while(1)
-	{
-		//xmem_write(0xae, 0x1000); // display off
-		// xmem_write(0xff, 0x1000);
-		
-		xmem_write(0xff, 0x1200);
-		_delay_ms(delay);
-		xmem_write(0x00, 0x1200); // display on
-		//_delay_ms(delay);
-	}
-	
-}
-
-/*
-			float x_per;
-			float y_per;
-			pos_t position;
-			int calibrated = 0;
-			dutyCircle = 50;
-			// ADC_data = {0,0,0,0};
-			(x_per) = 0;
-			(y_per) = 0;
+	oled_print_arrow(page_arrow, y_arrow, 0);
+	/*
+	while (1)
+	{		
 		joystick_analog_position(&x_per, &y_per, ADC_data, &calibrated);
 		position = pos_read(&x_per, &y_per);
-		
+			
 		slider_position(&x_per, &y_per, ADC_data);
-		*/
+		switch(position)
+		{
+			case UP:
+				printf("UP\n");
+				oled_print_arrow(page_arrow, y_arrow, 1);
+				page_arrow -= size_arrow;
+				if(page_arrow < 0) page_arrow = 7;
+				oled_print_arrow(page_arrow, y_arrow, 0);
+				break;
+			case DOWN:
+				printf("DOWN\n");
+				oled_print_arrow(page_arrow, y_arrow, 1);
+				page_arrow += size_arrow;
+				if(page_arrow > 7) page_arrow = 0;
+				oled_print_arrow(page_arrow, y_arrow, 0);
+				break;
+			case RIGHT:
+				printf("RIGHT\n");
+				oled_print_arrow(page_arrow, y_arrow, 1);
+				y_arrow += 5;
+				oled_print_arrow(page_arrow, y_arrow, 0);
+				break;
+			case LEFT:
+				printf("LEFT\n");
+				oled_print_arrow(page_arrow, y_arrow, 1);
+				y_arrow -= 5;
+				oled_print_arrow(page_arrow, y_arrow, 0);				
+				break;
+			case NEUTRAL:
+				printf("NEUTRAL\n");
+				break;
+			default:
+				printf("Not working ?\n");
+				break;
+		}
+		
+		_delay_ms(1);
+	}
+	*/
+}
+

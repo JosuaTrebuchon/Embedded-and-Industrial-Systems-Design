@@ -28,10 +28,132 @@ void oled_init()
 	//xmem_write(0xb0, 0x1000);
 	//xmem_write(0x00, 0x1000);
 
-	//xmem_write(0xa5, 0x1000);
+	//
 	
 	xmem_write(0xaf, 0x1000); // display on
 }
+
+void oled_reset()
+{
+
+	int num_pages = 8;
+	int num_rows = 128;
+	uint8_t page_num = 0xb0;
+	
+	//start location in page
+	// xmem_write(0x40, 0x1000);
+	
+	//page number
+	xmem_write(page_num, 0x1000);
+	
+	for(int i = 0; i < num_pages; ++i)
+	{
+		for(int j = 0; j < num_rows; ++j)
+		{
+			xmem_write(0x00, 0x1200);
+		}
+		
+		page_num = page_num + 1;
+		xmem_write(page_num, 0x1000);
+	}
+}
+
+
+/*
+void oled_reset()
+{
+	xmem_write(0xa7, 0x1000);
+	xmem_write(0xa6, 0x1000);
+	
+}*/
+void write_char(char n)
+{
+	unsigned char segment [8] = {0};
+	
+	for(int i = 0; i < 8; ++i)
+	{
+		segment[i] = pgm_read_byte(&(font8[(int)n - 32][i])) ;
+		xmem_write(segment[i], 0x1200);
+	}
+}
+
+void oled_home()
+{
+	xmem_write(0xb0, 0x1000);
+
+	xmem_write(0x00, 0x1000);
+	xmem_write(0x10, 0x1000);	
+
+}
+
+void go_to_row(int i)
+{
+	uint8_t pos = 0xb0+i;
+	xmem_write(pos, 0x1000);
+}
+
+void go_to_col(uint8_t i)
+{
+/*
+	uint8_t lower_start;
+	uint8_t upper;
+*/
+	
+	// lower_start = (i & 0x0f);
+	// upper = ((i >> 4) & 0x0f);
+	xmem_write((i & 0x0f), 0x1000);
+	xmem_write((0x10 + ((i >> 4) & 0x0f)), 0x1000);
+/*
+	xmem_write(0x0D, 0x1000);
+	xmem_write(0x17, 0x1000);*/
+}
+
+void clear_line(int i)
+{
+	for(int col = 0; col < 128; col++)
+	{
+		go_to_row(i);
+		go_to_col(col);	
+		xmem_write(0x00, 0x1200);
+	}
+	
+}
+
+
+void oled_print(char * word)
+{
+	int i =0;
+	while (word[i] != '\0')
+	{
+		write_char(word[i]);
+		++i;
+	}
+}
+
+void oled_print_arrow (int row , int col, uint8_t clear)
+{
+	go_to_col(col);
+	go_to_row(row);
+	//_delay_ms(5);
+	if(clear < 1)
+	{
+		xmem_write(0b00011000, 0x1200);
+		xmem_write(0b00011000, 0x1200 );
+		xmem_write(0b01111110, 0x1200 );
+		xmem_write(0b00111100, 0x1200 );
+		xmem_write(0b00011000, 0x1200 );
+	}else
+	{
+		xmem_write(0b00000000, 0x1200);
+		xmem_write(0b00000000, 0x1200 );
+		xmem_write(0b00000000, 0x1200 );
+		xmem_write(0b00000000, 0x1200 );
+		xmem_write(0b00000000, 0x1200 );		
+	}
+}
+
+
+
 /*
 void OLED_pos(int row, int col){
 	

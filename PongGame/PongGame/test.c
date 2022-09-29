@@ -1,5 +1,6 @@
 #include "test.h"
 #include "ATmega162_driver.h"
+#include "p1000_driver.h"
 #include <avr/interrupt.h>
 
 void pin_test()
@@ -140,4 +141,92 @@ void ADC_test()
 			//ADC_read();
 			//xmem_write(0x00, 0x1400);
 		}
+}
+
+uint8_t ADC_data [4];
+void joystick_test()
+
+{
+	
+		float x_per;
+		float y_per;
+		pos_t position;
+		int calibrated = 0;
+		dutyCircle = 50;
+		// ADC_data = {0,0,0,0};
+		(x_per) = 0;
+		(y_per) = 0;
+		
+		while (1)
+		{
+			
+			joystick_analog_position(&x_per, &y_per, ADC_data, &calibrated);
+			position = pos_read(&x_per, &y_per);
+			
+			slider_position(&x_per, &y_per, ADC_data);
+			switch(position)
+			{
+				case UP:
+				printf("UP\n");
+				break;
+				case DOWN:
+				printf("DOWN\n");
+				break;
+				case RIGHT:
+				printf("RIGHT\n");
+				break;
+				case LEFT:
+				printf("LEFT\n");
+				break;
+				case NEUTRAL:
+				printf("NEUTRAL\n");
+				break;
+				default:
+				printf("Not working ?\n");
+				break;
+			}
+		}
+}
+
+
+void oled_print_test()
+{
+	oled_init();
+		
+	oled_reset();
+		
+	char i = 33;
+	int co = 0;
+	uint8_t page = 0xb0;
+	int page_count =0;
+		
+	oled_home();
+		
+	_delay_ms(1);
+	while(1)
+	{
+		if(i > 126)
+		{
+			i = 33;
+		}
+			
+		if(co >= 127)
+		{
+			++page;
+			++page_count;
+			if(page_count > 7){
+					
+				oled_reset();
+				page = 0xb0;
+				page_count=0;
+			}
+			xmem_write(page, 0x1000);
+			co = 0;
+		}
+			
+		write_char(i);
+		//write_char(32); // print space
+		++i;
+		co += 8;
+	}
 }
