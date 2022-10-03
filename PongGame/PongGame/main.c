@@ -52,7 +52,7 @@ ISR(INT2_vect)
 /************************************************************************/
 ISR(INT0_vect)
 {
-	printf("BUTTON pressed y arrow: %d, page arrow: %d\n", y_arrow, page_arrow);
+	printf("BUTTON pressed Column: %d, Page: %d\n", y_arrow, page_arrow);
 }
 
 int main(void)
