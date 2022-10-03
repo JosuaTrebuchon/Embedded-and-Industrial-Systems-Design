@@ -67,3 +67,17 @@ void xmem_write (uint8_t data , uint16_t addr)
 	uint8_t ret_val = ext_mem [addr];
 	return ret_val ;
 }
+
+void pushButton_init()
+{
+	clear_bit(DDRD, DDD2); // set PD2 as Input to use the INT0 Interrupt for Joystick button
+	
+	set_bit(PORTD, DDD2);  // Set pull-up resistor ON -> high level on input
+	
+	clear_bit(MCUCR, ISC00); /* Trigger interrupt on falling edge */
+	set_bit(MCUCR, ISC01);
+	
+	set_bit(GICR, INT0); /* Enable INT0 interrupt */
+	
+	
+}

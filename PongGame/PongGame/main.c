@@ -17,31 +17,49 @@
 #include "p1000_driver.h" 
 
 extern uint8_t ADC_data [4];
+int y_arrow;
+int page_arrow;
 
+
+/************************************************************************/
+/* Interrupt catching byte reception for UART communication             */
+/************************************************************************/
 ISR(USART0_RXC_vect)
 {
 	char ReceivedByte;
 	ReceivedByte = UDR0; // Fetch the received byte value into the variable "ByteReceived"
 	UDR0 = ReceivedByte; // Echo back the received byte back to the computer
 }
-
+/************************************************************************/
+/* Interrupt catching the timer counter for PWM clock                   */
+/************************************************************************/
 ISR(TIMER1_OVF_vect)
 {
 	OCR1A = (dutyCircle/100.0)*ICR1;
 }
 
+/************************************************************************/
+/* Interrupt catching BUSY signal for ADC data read                     */
+/************************************************************************/
 ISR(INT2_vect)
 {
 	ADC_read(ADC_data);
 	// xmem_write(0x52, 0x1400);
 
 }
+/************************************************************************/
+/* Interrupt catching joystick button falling edge                      */
+/************************************************************************/
+ISR(INT0_vect)
+{
+	printf("BUTTON pressed y arrow: %d, page arrow: %d\n", y_arrow, page_arrow);
+}
 
 int main(void)
 {
 			
-	int page_arrow;
-	int y_arrow;
+
+
 	uint8_t size_arrow;
 	
 	float x_per;
@@ -57,34 +75,47 @@ int main(void)
 	stdout = &mystdout;
 
 	USART_Init(UBRR);
-		
+	
 	xmem_init();
-		
+	
 	PWM_Init();
 	ADC_init();
-		
+	
 	sei(); // Enable all interrupt
 
 	size_arrow = 1;
-	page_arrow = 0;
+	page_arrow = 2;
 	y_arrow = 0;
-	
+	position = 0;
+	pushButton_init();
 	oled_init();
-	oled_home();
 	oled_reset();
+	
+	oled_home();
+	//
 	//oled_home();
 	
-	//oled_print_arrow(page_arrow, y_arrow, 0);
+	go_to_page(2);
+	go_to_col(30);
+	oled_print("Start");
+	go_to_page(3);
+	go_to_col(30);
+	oled_print("PingPong");
+	go_to_page(4);
+	go_to_col(30);
+	oled_print("End game");
+	
+	//oled_home();
 	
 	
 	oled_print_arrow(page_arrow, y_arrow, 0);
-	/*
+	
 	while (1)
 	{		
 		joystick_analog_position(&x_per, &y_per, ADC_data, &calibrated);
 		position = pos_read(&x_per, &y_per);
 			
-		slider_position(&x_per, &y_per, ADC_data);
+		// slider_position(&x_per, &y_per, ADC_data);
 		switch(position)
 		{
 			case UP:
@@ -103,16 +134,20 @@ int main(void)
 				break;
 			case RIGHT:
 				printf("RIGHT\n");
+				
 				oled_print_arrow(page_arrow, y_arrow, 1);
 				y_arrow += 5;
 				oled_print_arrow(page_arrow, y_arrow, 0);
 				break;
+				
 			case LEFT:
+			
 				printf("LEFT\n");
 				oled_print_arrow(page_arrow, y_arrow, 1);
 				y_arrow -= 5;
 				oled_print_arrow(page_arrow, y_arrow, 0);				
 				break;
+				
 			case NEUTRAL:
 				printf("NEUTRAL\n");
 				break;
@@ -123,6 +158,8 @@ int main(void)
 		
 		_delay_ms(1);
 	}
-	*/
+	
+	
+	
 }
 

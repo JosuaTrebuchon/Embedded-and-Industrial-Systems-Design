@@ -5,6 +5,12 @@ void oled_init()
 
 	xmem_write(0xae, 0x1000); // display off
 	xmem_write(0xa1, 0x1000); //segment remap
+	
+	/*
+	xmem_write(0xD3, 0x1000);
+	xmem_write(0x00, 0x1000);
+	*/
+	
 	xmem_write(0xda, 0x1000); //common pads hardware: alternative
 	xmem_write(0x12, 0x1000);
 	xmem_write(0xc8, 0x1000); //common output scan direction:com63~com0
@@ -86,13 +92,13 @@ void oled_home()
 
 }
 
-void go_to_row(int i)
+void go_to_page(int i) //0-7
 {
 	uint8_t pos = 0xb0+i;
 	xmem_write(pos, 0x1000);
 }
 
-void go_to_col(uint8_t i)
+void go_to_col(uint8_t i) //0-127
 {
 /*
 	uint8_t lower_start;
@@ -112,7 +118,7 @@ void clear_line(int i)
 {
 	for(int col = 0; col < 128; col++)
 	{
-		go_to_row(i);
+		go_to_page(i);
 		go_to_col(col);	
 		xmem_write(0x00, 0x1200);
 	}
@@ -133,7 +139,7 @@ void oled_print(char * word)
 void oled_print_arrow (int row , int col, uint8_t clear)
 {
 	go_to_col(col);
-	go_to_row(row);
+	go_to_page(row);
 	//_delay_ms(5);
 	if(clear < 1)
 	{
@@ -154,10 +160,8 @@ void oled_print_arrow (int row , int col, uint8_t clear)
 
 
 
-/*
-void OLED_pos(int row, int col){
+void oled_menu()
+{
 	
-	xmem_write()
-};
-	*/
+}
 	
