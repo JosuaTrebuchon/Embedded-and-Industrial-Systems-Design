@@ -160,6 +160,12 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="MCP2515_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCP2515_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="OLED_driver.c">
       <SubType>compile</SubType>
     </Compile>
@@ -170,6 +176,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="p1000_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SPI.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SPI.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="test.c">

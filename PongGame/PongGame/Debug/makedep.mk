@@ -10,9 +10,13 @@ fonts.c
 
 main.c
 
+MCP2515_driver.c
+
 OLED_driver.c
 
 p1000_driver.c
+
+SPI.c
 
 test.c
 

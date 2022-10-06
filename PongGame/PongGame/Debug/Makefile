@@ -41,8 +41,10 @@ C_SRCS +=  \
 ../ATmega162_driver.c \
 ../fonts.c \
 ../main.c \
+../MCP2515_driver.c \
 ../OLED_driver.c \
 ../p1000_driver.c \
+../SPI.c \
 ../test.c
 
 
@@ -57,8 +59,10 @@ ADC_driver.o \
 ATmega162_driver.o \
 fonts.o \
 main.o \
+MCP2515_driver.o \
 OLED_driver.o \
 p1000_driver.o \
+SPI.o \
 test.o
 
 OBJS_AS_ARGS +=  \
@@ -66,8 +70,10 @@ ADC_driver.o \
 ATmega162_driver.o \
 fonts.o \
 main.o \
+MCP2515_driver.o \
 OLED_driver.o \
 p1000_driver.o \
+SPI.o \
 test.o
 
 C_DEPS +=  \
@@ -75,8 +81,10 @@ ADC_driver.d \
 ATmega162_driver.d \
 fonts.d \
 main.d \
+MCP2515_driver.d \
 OLED_driver.d \
 p1000_driver.d \
+SPI.d \
 test.d
 
 C_DEPS_AS_ARGS +=  \
@@ -84,8 +92,10 @@ ADC_driver.d \
 ATmega162_driver.d \
 fonts.d \
 main.d \
+MCP2515_driver.d \
 OLED_driver.d \
 p1000_driver.d \
+SPI.d \
 test.d
 
 OUTPUT_FILE_PATH +=PongGame.elf
@@ -130,6 +140,13 @@ LINKER_SCRIPT_DEP+=
 	@echo Finished building: $<
 	
 
+./MCP2515_driver.o: .././MCP2515_driver.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega162 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\atmega162" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
 ./OLED_driver.o: .././OLED_driver.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
@@ -138,6 +155,13 @@ LINKER_SCRIPT_DEP+=
 	
 
 ./p1000_driver.o: .././p1000_driver.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega162 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\atmega162" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./SPI.o: .././SPI.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\include"  -Og -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -g2 -Wall -mmcu=atmega162 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\gcc\dev\atmega162" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 

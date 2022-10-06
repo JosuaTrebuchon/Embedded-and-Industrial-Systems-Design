@@ -19,3 +19,5 @@ void decoder_test(void);
 void ADC_test(void); 
 
 void oled_print_test(void);
+
+void oled_movement_test(void);

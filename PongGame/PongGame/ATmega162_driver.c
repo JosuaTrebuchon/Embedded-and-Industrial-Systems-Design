@@ -78,6 +78,17 @@ void pushButton_init()
 	set_bit(MCUCR, ISC01);
 	
 	set_bit(GICR, INT0); /* Enable INT0 interrupt */
+		
+}
+
+void interrupt_MCP2515_init()
+{
+	clear_bit(DDRD, DDD3); // set PD3 as Input to use the INT1 Interrupt for CAN controller interrupt
 	
+	set_bit(PORTD, DDD3);  // Set pull-up resistor ON -> high level on input
 	
+	clear_bit(MCUCR, ISC10); /* Trigger interrupt on falling edge */
+	clear_bit(MCUCR, ISC11);
+	
+	set_bit(GICR, INT1); /* Enable INT1 interrupt */
 }

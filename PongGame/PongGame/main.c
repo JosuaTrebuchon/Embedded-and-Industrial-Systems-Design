@@ -15,6 +15,7 @@
 #include <avr/interrupt.h>
 #include "ADC_driver.h"
 #include "p1000_driver.h" 
+#include "MCP2515_driver.h"
 
 extern uint8_t ADC_data [4];
 int y_arrow;
@@ -55,110 +56,43 @@ ISR(INT0_vect)
 	printf("BUTTON pressed Column: %d, Page: %d\n", y_arrow, page_arrow);
 }
 
+/************************************************************************/
+/* Interrupt catching INT1 VAN controller low level                     */
+/************************************************************************/
+ISR(INT1_vect)
+{
+	printf("CAN controller interrupt caught /!\\\n");
+}
+
 int main(void)
 {
-			
-
-
-	uint8_t size_arrow;
-	
-	float x_per;
-	float y_per;
-	pos_t position;
-	int calibrated = 0;
-	dutyCircle = 50;
-
-	(x_per) = 0;
-	(y_per) = 0;
-
 
 	stdout = &mystdout;
 
 	USART_Init(UBRR);
-	
 	xmem_init();
-	
 	PWM_Init();
 	ADC_init();
-	
-	sei(); // Enable all interrupt
+	spi_init();
+	char data;
 
-	size_arrow = 1;
-	page_arrow = 2;
-	y_arrow = 0;
-	position = 0;
-	pushButton_init();
-	oled_init();
-	oled_reset();
-	
-	oled_home();
-	//
-	//oled_home();
-	
-	go_to_page(2);
-	go_to_col(30);
-	oled_print("Start");
-	go_to_page(3);
-	go_to_col(30);
-	oled_print("PingPong");
-	go_to_page(4);
-	go_to_col(30);
-	oled_print("End game");
-	
-	//oled_home();
-	
-	
-	oled_print_arrow(page_arrow, y_arrow, 0);
-	
-	while (1)
-	{		
-		joystick_analog_position(&x_per, &y_per, ADC_data, &calibrated);
-		position = pos_read(&x_per, &y_per);
-			
-		// slider_position(&x_per, &y_per, ADC_data);
-		switch(position)
-		{
-			case UP:
-				printf("UP\n");
-				oled_print_arrow(page_arrow, y_arrow, 1);
-				page_arrow -= size_arrow;
-				if(page_arrow < 0) page_arrow = 7;
-				oled_print_arrow(page_arrow, y_arrow, 0);
-				break;
-			case DOWN:
-				printf("DOWN\n");
-				oled_print_arrow(page_arrow, y_arrow, 1);
-				page_arrow += size_arrow;
-				if(page_arrow > 7) page_arrow = 0;
-				oled_print_arrow(page_arrow, y_arrow, 0);
-				break;
-			case RIGHT:
-				printf("RIGHT\n");
-				
-				oled_print_arrow(page_arrow, y_arrow, 1);
-				y_arrow += 5;
-				oled_print_arrow(page_arrow, y_arrow, 0);
-				break;
-				
-			case LEFT:
-			
-				printf("LEFT\n");
-				oled_print_arrow(page_arrow, y_arrow, 1);
-				y_arrow -= 5;
-				oled_print_arrow(page_arrow, y_arrow, 0);				
-				break;
-				
-			case NEUTRAL:
-				printf("NEUTRAL\n");
-				break;
-			default:
-				printf("Not working ?\n");
-				break;
-		}
+		/*
+		mcp2515_write(MCP_CANINTF, MCP_ERRIF);
+		//spi_transmit(0x2C);
+		data = mcp2515_read(MCP_CANINTF);
+		printf("read 0x%02X \n", data);
+		*/
+		mcp2515_bit_modify(MCP_CANINTF, 0xFF, 0x00);
+		data = mcp2515_read_status();
+		printf("first read 0x%02X \n", data);
+		_delay_ms(5);
+		mcp2515_bit_modify(MCP_CANINTF, 0xFF, 0xFF);
+		_delay_ms(5);
+		data = mcp2515_read_status();
+		printf("second read 0x%02X \n", data);
 		
-		_delay_ms(1);
-	}
-	
+
+	//CANINTF.TXnIF
 	
 	
 }
