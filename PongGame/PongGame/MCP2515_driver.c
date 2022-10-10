@@ -1,6 +1,28 @@
 #include "MCP2515_driver.h"
 
 
+uint8_t mcp2515_init ()
+{
+	//stdout = &mystdout;
+	char value;
+	spi_init () ; // Initialize SPI
+	mcp2515_reset () ; // Send reset - command
+	
+	// Self - test for Config mode (set during reset)
+	value = mcp2515_read ( MCP_CANSTAT);
+	if (( value & MODE_MASK ) != MODE_CONFIG ) {
+		printf (" MCP2515 is NOT in configuration mode after reset !\n");
+		return 1;
+	}
+	
+	//set to Loopback mode
+	mcp2515_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_LOOPBACK);
+	
+	return 0;
+}
+
+
+
 char mcp2515_read(unsigned char addr)
 {
 	clear_bit(PORTB, PB4);

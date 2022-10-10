@@ -6,6 +6,8 @@ ADC_driver.c
 
 ATmega162_driver.c
 
+CAN.c
+
 fonts.c
 
 main.c

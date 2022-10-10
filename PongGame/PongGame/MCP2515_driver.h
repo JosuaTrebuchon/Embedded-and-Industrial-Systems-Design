@@ -2,6 +2,8 @@
 #include "bit_maniulation.h"
 #include "MCP2515_registers.h"
 
+uint8_t mcp2515_init (); 
+
 char mcp2515_read(unsigned char addr);
 
 void mcp2515_write(unsigned char addr, unsigned char data);

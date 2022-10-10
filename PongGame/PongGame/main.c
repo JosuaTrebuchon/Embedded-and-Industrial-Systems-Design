@@ -16,6 +16,7 @@
 #include "ADC_driver.h"
 #include "p1000_driver.h" 
 #include "MCP2515_driver.h"
+#include "CAN.h"
 
 extern uint8_t ADC_data [4];
 int y_arrow;
@@ -73,15 +74,47 @@ int main(void)
 	xmem_init();
 	PWM_Init();
 	ADC_init();
-	spi_init();
+	//spi_init();
+	//char data;
+	uint8_t status;
+	 status = mcp2515_init ();
+	
+	can_message message;
+	
+	message.id = 1;
+	message.data_length = 3;
+	message.data[0] = 'H';
+	message.data[1] = 'I';
+	message.data[2] = '!';
+	
 	char data;
+	data = mcp2515_read_status();
+	
+	printf("status before send 0x%02X \n", data);
+	
+	can_message_send(&message);
+	_delay_ms(2);
+	
+	data = mcp2515_read_status();
+		
+	printf("status after send 0x%02X \n", data);
+	
+	can_message read_message;
+	
+	read_message = can_data_recieve();
+	_delay_ms(2);
+	
+	data = mcp2515_read_status();
+	
+	printf("status after read 0x%02X \n", data);
+	printf("message data read %c%c%c\n", read_message.data[0], read_message.data[1], read_message.data[2]);
 
 		/*
 		mcp2515_write(MCP_CANINTF, MCP_ERRIF);
 		//spi_transmit(0x2C);
 		data = mcp2515_read(MCP_CANINTF);
 		printf("read 0x%02X \n", data);
-		*/
+		
 		mcp2515_bit_modify(MCP_CANINTF, 0xFF, 0x00);
 		data = mcp2515_read_status();
 		printf("first read 0x%02X \n", data);
@@ -90,7 +123,7 @@ int main(void)
 		_delay_ms(5);
 		data = mcp2515_read_status();
 		printf("second read 0x%02X \n", data);
-		
+		*/
 
 	//CANINTF.TXnIF
 	
