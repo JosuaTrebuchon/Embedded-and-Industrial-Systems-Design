@@ -15,6 +15,12 @@ uint8_t mcp2515_init ()
 		return 1;
 	}
 	
+	//Set baudrate, PropSeg, PS1, PS2, SJW, 
+	//F_osc= 16MHz
+	//Use set in register CNF1, CNF2, CNF3 From page 43 in MCP2515
+	
+	//Baud = 125kHz
+	//
 	//set to Loopback mode
 	mcp2515_bit_modify(MCP_CANCTRL, MODE_MASK, MODE_LOOPBACK);
 	

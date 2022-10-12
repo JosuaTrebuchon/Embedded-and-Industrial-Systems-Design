@@ -157,6 +157,18 @@
     <Compile Include="CAN.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="can_controller.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="can_controller.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="can_interrupt.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="can_interrupt.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="fonts.c">
       <SubType>compile</SubType>
     </Compile>
@@ -184,6 +196,12 @@
     <Compile Include="p1000_driver.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="printf-stdarg.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="printf-stdarg.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="SPI.c">
       <SubType>compile</SubType>
     </Compile>
@@ -194,6 +212,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="test.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="uart.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="uart.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
