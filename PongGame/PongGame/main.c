@@ -74,59 +74,31 @@ int main(void)
 	xmem_init();
 	PWM_Init();
 	ADC_init();
-	//spi_init();
-	//char data;
-	uint8_t status;
-	 status = mcp2515_init ();
+	mcp2515_init();
 	
-	can_message message;
+	float x_per;
+	float y_per;
+	pos_t position;
+	position = 0;
+	(x_per) = 0;
+	(y_per) = 0;
+	int calibrated = 0;
+	can_message joystick_msg;
 	
-	message.id = 1;
-	message.data_length = 3;
-	message.data[0] = 'H';
-	message.data[1] = 'I';
-	message.data[2] = '!';
-	
-	char data;
-	data = mcp2515_read_status();
-	
-	printf("status before send 0x%02X \n", data);
-	
-	can_message_send(&message);
-	_delay_ms(2);
-	
-	data = mcp2515_read_status();
-		
-	printf("status after send 0x%02X \n", data);
-	
-	can_message read_message;
-	
-	read_message = can_data_recieve();
-	_delay_ms(2);
-	
-	data = mcp2515_read_status();
-	
-	printf("status after read 0x%02X \n", data);
-	printf("message data read %c%c%c\n", read_message.data[0], read_message.data[1], read_message.data[2]);
+	while (1)
+	{
+		joystick_analog_position(&x_per, &y_per, ADC_data, &calibrated);
+		position = pos_read(&x_per, &y_per);
 
-		/*
-		mcp2515_write(MCP_CANINTF, MCP_ERRIF);
-		//spi_transmit(0x2C);
-		data = mcp2515_read(MCP_CANINTF);
-		printf("read 0x%02X \n", data);
+		joystick_msg.id = 1;
+		joystick_msg.data_length = 1;
+		joystick_msg.data[0] = position;
+		printf("position %d\n", position);
+		can_message_send(&joystick_msg);
 		
-		mcp2515_bit_modify(MCP_CANINTF, 0xFF, 0x00);
-		data = mcp2515_read_status();
-		printf("first read 0x%02X \n", data);
-		_delay_ms(5);
-		mcp2515_bit_modify(MCP_CANINTF, 0xFF, 0xFF);
-		_delay_ms(5);
-		data = mcp2515_read_status();
-		printf("second read 0x%02X \n", data);
-		*/
+		//_delay_ms(100);
+	}
 
-	//CANINTF.TXnIF
-	
-	
+
 }
 

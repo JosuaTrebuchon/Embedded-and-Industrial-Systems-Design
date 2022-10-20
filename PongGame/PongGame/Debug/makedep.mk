@@ -8,10 +8,6 @@ ATmega162_driver.c
 
 CAN.c
 
-can_controller.c
-
-can_interrupt.c
-
 fonts.c
 
 main.c
@@ -22,11 +18,7 @@ OLED_driver.c
 
 p1000_driver.c
 
-printf-stdarg.c
-
 SPI.c
 
 test.c
-
-uart.c
 

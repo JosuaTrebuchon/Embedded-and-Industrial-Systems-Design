@@ -17,7 +17,7 @@
 
 #include "can_controller.h"
 
-#define DEBUG_INTERRUPT 0
+#define DEBUG_INTERRUPT 1
 
 /**
  * \brief CAN0 Interrupt handler for RX, TX and bus error interrupts
@@ -32,7 +32,7 @@ void CAN0_Handler( void )
 	char can_sr = CAN0->CAN_SR; 
 	
 	//RX interrupt
-	if(can_sr & (CAN_SR_MB1 | CAN_SR_MB2) )//Only mailbox 1 and 2 specified for receiving
+	if(can_sr  & (CAN_SR_MB1 | CAN_SR_MB2)) //Only mailbox 1 and 2 specified for receiving
 	{
 		CAN_MESSAGE message;
 		if(can_sr & CAN_SR_MB1)  //Mailbox 1 event

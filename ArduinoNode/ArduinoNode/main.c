@@ -7,7 +7,10 @@
 
 
 #include "sam.h"
-
+#include "printf-stdarg.h"
+#include "uart.h"
+#include "can_interrupt.h"
+#include "can_controller.h"
 
 void toggleLED1()
 {
@@ -43,19 +46,45 @@ void toggleLED2()
 
 int main(void)
 {
-    /* Initialize the SAM system */
-    SystemInit();
+
+
+	
 
     /* Enables pin A19 and A20 */
 	PIOA->PIO_PER |= ((0x1 << 20) | (0x1 << 19));
     
 	/* Enable the output on the I/O line */
     PIOA->PIO_OER |= ((0x1 << 20) | (0x1 << 19));
+	    /* Initialize the SAM system */
+    SystemInit();
 	
+	configure_uart();
+	uint32_t can_br = 0x00290165;//0x10165;
+		
+	can_init_def_tx_rx_mb(can_br);
+		
+	/*disable watchdog*/
+	WDT->WDT_MR = WDT_MR_WDDIS;
+	/*
+	CAN_MESSAGE can_msg;
+	while(1){
+			can_receive(&can_msg, 0);
+			
+			printf("message data read %c length %d ID %d\n", can_msg.data[0], can_msg.data_length, can_msg.id);
+			
+			
+	}
+	*/
+
+	//CAN0_Handler();
+	
+	/*
 	while(1)
 	{
 		toggleLED1();
 		toggleLED2();
+		
+		printf("success!");
 	}
-
+	*/
 }

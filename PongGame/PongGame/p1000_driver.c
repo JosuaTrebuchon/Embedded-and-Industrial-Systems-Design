@@ -10,6 +10,7 @@
 float x_joystick_calibrate=128; 
 float y_joystick_calibrate=128; void joystick_analog_position(float* x_per, float* y_per, uint8_t* ADC_data, int* calibrated)
 {
+	ADC_read(ADC_data);
 	xmem_write(0x52, 0x1400);
 	/*
 	if(!(*calibrated))
@@ -56,3 +57,4 @@ pos_t pos_read(float* x_per, float* y_per)
 	return NEUTRAL;
 	
 }
+

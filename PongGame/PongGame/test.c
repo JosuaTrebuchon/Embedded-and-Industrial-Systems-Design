@@ -3,6 +3,8 @@
 #include "ADC_driver.h"
 #include "p1000_driver.h"
 #include <avr/interrupt.h>
+#include "MCP2515_driver.h"
+#include "CAN.h"
 
 void pin_test()
 {
@@ -146,7 +148,6 @@ void ADC_test()
 
 uint8_t ADC_data [4];
 void joystick_test()
-
 {
 	
 		float x_per;
@@ -159,8 +160,9 @@ void joystick_test()
 		(y_per) = 0;
 		
 		while (1)
-		{
-			
+		{	
+			ADC_read(&ADC_data);
+			//printf( "ADC_data[%d] = %d, ADC_data[%d] = %d\n", 0, (int)ADC_data [0],3, (int)ADC_data [3]);	
 			joystick_analog_position(&x_per, &y_per, ADC_data, &calibrated);
 			position = pos_read(&x_per, &y_per);
 			
@@ -338,3 +340,45 @@ void oled_movement_test()
 }
 
 
+void test_CAN()
+{
+	can_message message1;
+	can_message message2;
+	
+	message1.id = 1;
+	message1.data_length = 3;
+	message1.data[0] = 'H';
+	message1.data[1] = 'I';
+	message1.data[2] = '!';
+	
+	message2.id = 2;
+	message2.data_length = 3;
+	message2.data[0] = 'B';
+	message2.data[1] = 'Y';
+	message2.data[2] = 'E';
+	/*
+	char data;
+	data = mcp2515_read_status();
+	
+	printf("status before send 0x%02X \n", data);
+	*/
+		while(1){
+			can_message_send(&message2);
+			_delay_ms(100);
+			
+			can_message_send(&message1);
+			_delay_ms(100);
+				/*
+				can_message read_message;
+				
+				read_message = can_data_recieve();
+				_delay_ms(2);
+				
+				//data = mcp2515_read_status();
+				
+				//printf("status after read 0x%02X \n", data);
+				printf("message data read %c%c%c %d\n", read_message.data[0], read_message.data[1], read_message.data[2], read_message.id);
+				*/
+		}
+
+}
