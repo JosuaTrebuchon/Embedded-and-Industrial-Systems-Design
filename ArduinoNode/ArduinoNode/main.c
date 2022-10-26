@@ -87,4 +87,8 @@ int main(void)
 		printf("success!");
 	}
 	*/
+	
+	peripheral_init();
+
+	pwm_init();
 }

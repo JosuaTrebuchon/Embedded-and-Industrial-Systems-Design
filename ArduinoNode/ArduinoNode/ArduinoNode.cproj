@@ -186,6 +186,15 @@
     <Compile Include="printf-stdarg.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="pwm.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="pwm_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="pwm_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="uart.c">
       <SubType>compile</SubType>
     </Compile>
