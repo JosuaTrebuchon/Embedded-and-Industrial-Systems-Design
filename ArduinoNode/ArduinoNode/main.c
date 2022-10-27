@@ -5,12 +5,21 @@
  * Author : bjornolo
  */ 
 
+#define F_CPU 84000000L
+//#define __SAM3X8E__
 
 #include "sam.h"
 #include "printf-stdarg.h"
 #include "uart.h"
 #include "can_interrupt.h"
 #include "can_controller.h"
+#include "pwm_driver.h"
+
+void delay(void) {
+	uint16_t t;
+	for (t = 0; t < F_CPU/4; t++)
+	__asm__ volatile("nop\n\t"); // busy wait
+}
 
 void toggleLED1()
 {
@@ -75,20 +84,16 @@ int main(void)
 			
 	}
 	*/
-
-	//CAN0_Handler();
-	
-	/*
-	while(1)
-	{
-		toggleLED1();
-		toggleLED2();
-		
-		printf("success!");
-	}
-	*/
 	
 	peripheral_init();
 
 	pwm_init();
+	
+		while(1)
+		{
+			joystick_input();
+			//pwm_duty_update(1800);
+			//delay();
+			//pwm_duty_update(4200);
+		}
 }

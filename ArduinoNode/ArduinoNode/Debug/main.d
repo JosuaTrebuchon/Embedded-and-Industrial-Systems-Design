@@ -82,7 +82,7 @@ main.d main.o: .././main.c \
  C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.50\include/instance/gpbr.h \
  C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.50\include/pio/sam3x8e.h \
  .././printf-stdarg.h .././uart.h .././can_interrupt.h \
- .././can_controller.h
+ .././can_controller.h .././pwm_driver.h .././pwm.h
 
 C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.50\include/sam.h:
 
@@ -255,3 +255,7 @@ C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.50\include/p
 .././can_interrupt.h:
 
 .././can_controller.h:
+
+.././pwm_driver.h:
+
+.././pwm.h:
