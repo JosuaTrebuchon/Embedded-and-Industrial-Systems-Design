@@ -171,10 +171,22 @@
     <Compile Include="can_interrupt.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="DAC_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="DAC_driver.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Device_Startup\startup_sam3xa.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="Device_Startup\system_sam3xa.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="IR_driver.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="IR_driver.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">

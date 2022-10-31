@@ -1,6 +1,6 @@
 #include "pwm_driver.h"
 
-void peripheral_init(){
+void peripheral_init_pwm(){
 	
 	
 	// PIOC->PIO_PER |= ((0x1 << 19));

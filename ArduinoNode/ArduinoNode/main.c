@@ -14,6 +14,9 @@
 #include "can_interrupt.h"
 #include "can_controller.h"
 #include "pwm_driver.h"
+#include "IR_driver.h"
+#include "adc.h"
+#include "DAC_driver.h"
 
 void delay(void) {
 	uint16_t t;
@@ -85,15 +88,23 @@ int main(void)
 	}
 	*/
 	
-	peripheral_init();
+	peripheral_init_pwm();
 
 	pwm_init();
 	
-		while(1)
-		{
-			joystick_input();
-			//pwm_duty_update(1800);
-			//delay();
-			//pwm_duty_update(4200);
-		}
+	peripheral_init_adc();
+	ADC_init();
+	DACC_init();
+	motor_init();
+	int score = 0;
+	int no_goal_counter = 0;
+	
+	while(1)
+	{
+		//joystick_input();
+		check_for_score(&score, &no_goal_counter);
+		
+		DACC->DACC_CDR = 0xFFF;
+			
+	}
 }

@@ -9,7 +9,7 @@
 #define PWM_CDTY5 0x400942A4
 #define PWM_ENA 0x40094004*/
 
-void peripheral_init();
+void peripheral_init_pwm();
 
 void pwm_init();
 
