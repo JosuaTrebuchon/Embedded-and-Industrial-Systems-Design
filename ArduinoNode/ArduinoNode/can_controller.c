@@ -11,8 +11,8 @@
 #include "can_controller.h"
 
 #include "sam.h"
-
 #include "printf-stdarg.h"
+
 
 
 /**
@@ -206,3 +206,10 @@ uint8_t can_receive(CAN_MESSAGE* can_msg, uint8_t rx_mb_id)
 	}
 }
 
+
+void update_P1000(P1000_DATA * data, CAN_MESSAGE* can_message)
+{
+	data->joystick = can_message->data[0];
+	data->left_slider = can_message->data[1];
+	data->right_slider = can_message->data[2];
+}

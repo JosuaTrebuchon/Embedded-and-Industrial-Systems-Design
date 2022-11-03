@@ -19,6 +19,9 @@
 
 #define DEBUG_INTERRUPT 0
 
+P1000_DATA P1000_data;
+
+
 /**
  * \brief CAN0 Interrupt handler for RX, TX and bus error interrupts
  *
@@ -57,6 +60,8 @@ void CAN0_Handler( void )
 			if(DEBUG_INTERRUPT)printf("%d ", message.data[i]);
 		}
 		if(DEBUG_INTERRUPT)printf("\n\r");
+		
+		update_P1000(&P1000_data, &message);
 	}
 	
 	if(can_sr & CAN_SR_MB0)

@@ -16,6 +16,8 @@ IR_driver.c
 
 main.c
 
+motor_controller.c
+
 printf-stdarg.c
 
 pwm_driver.c

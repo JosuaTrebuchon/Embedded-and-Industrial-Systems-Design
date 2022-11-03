@@ -150,8 +150,8 @@ uint8_t ADC_data [4];
 void joystick_test()
 {
 	
-		float x_per;
-		float y_per;
+		int x_per;
+		int y_per;
 		pos_t position;
 		int calibrated = 0;
 		dutyCircle = 50;

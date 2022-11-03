@@ -1,5 +1,7 @@
 #include "pwm_driver.h"
 
+P1000_DATA P1000_data;
+
 void peripheral_init_pwm(){
 	
 	
@@ -50,19 +52,20 @@ void pwm_duty_update(int PWM_dutycycle_tick_NEW)
 
 void joystick_input(void)
 {
-	CAN_MESSAGE can_msg;
-	can_receive(&can_msg, 0);
+
+
 	int pwm_dutycycle = (int)(PWM->PWM_CH_NUM[5].PWM_CDTY);
-	if(can_msg.id==1){
-		if (can_msg.data[0]==0)
+		if (P1000_data.joystick==0)
 		{
-			pwm_dutycycle+=50;
+			pwm_dutycycle+=100;
 			printf("increased duty cycle to %d \n",pwm_dutycycle);
 		}
-		if (can_msg.data[0]==1){
-			pwm_dutycycle-=50;
+		if (P1000_data.joystick==1){
+			pwm_dutycycle-=100;
 			printf("decreased duty cycle to %d \n",pwm_dutycycle);
 		}
 		pwm_duty_update(pwm_dutycycle);
-	}
+
+	//printf("slider left %d slider right %d\n", can_msg1.data[0], can_msg1.data[1]);
+
 }

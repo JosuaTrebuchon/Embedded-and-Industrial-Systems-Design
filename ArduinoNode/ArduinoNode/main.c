@@ -17,6 +17,9 @@
 #include "IR_driver.h"
 #include "adc.h"
 #include "DAC_driver.h"
+#include "motor_controller.h"
+
+extern P1000_DATA P1000_data;
 
 void delay(void) {
 	uint16_t t;
@@ -96,15 +99,20 @@ int main(void)
 	ADC_init();
 	DACC_init();
 	motor_init();
+	motor_read_init();
 	int score = 0;
 	int no_goal_counter = 0;
 	
+// 	PIOD -> PIO_CODR |= (0x1 << 10);
+// 	DACC->DACC_CDR = 0x9FF;
 	while(1)
 	{
-		//joystick_input();
 		check_for_score(&score, &no_goal_counter);
-		
-		DACC->DACC_CDR = 0xFFF;
-			
+		slider_open_loop();
+		joystick_input();
+		//printf("joystick %d left %d right %d \n", P1000_data.joystick, P1000_data.left_slider, P1000_data.right_slider);
+	
+		printf("Value from the counter inside decoder = %d \n", read_decoder());
+		printf("PDSR %d\n",(int)(PIOC->PIO_PDSR) );
 	}
 }

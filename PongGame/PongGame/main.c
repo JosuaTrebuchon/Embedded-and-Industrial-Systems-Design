@@ -83,20 +83,29 @@ int main(void)
 	(x_per) = 0;
 	(y_per) = 0;
 	int calibrated = 0;
-	can_message joystick_msg;
+	can_message P1000_msg;
 	
+	int left_pos;
+	int right_pos;
+	(left_pos) = 0;
+	(right_pos) = 0;
 	while (1)
 	{
+		
 		joystick_analog_position(&x_per, &y_per, ADC_data, &calibrated);
 		position = pos_read(&x_per, &y_per);
-
-		joystick_msg.id = 1;
-		joystick_msg.data_length = 1;
-		joystick_msg.data[0] = position;
-		printf("position %d\n", position);
-		can_message_send(&joystick_msg);
 		
-		//_delay_ms(100);
+		slider_position(&left_pos, &right_pos, ADC_data);
+
+		P1000_msg.id = 1;
+		P1000_msg.data_length = 3;
+		P1000_msg.data[0] = position;
+		P1000_msg.data[1] = left_pos;
+		P1000_msg.data[2] = right_pos;
+
+		can_message_send(&P1000_msg);
+		
+		_delay_ms(1000);
 	}
 
 
