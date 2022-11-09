@@ -21,12 +21,6 @@
 
 extern P1000_DATA P1000_data;
 
-void delay(void) {
-	uint16_t t;
-	for (t = 0; t < F_CPU/4; t++)
-	__asm__ volatile("nop\n\t"); // busy wait
-}
-
 void toggleLED1()
 {
 
@@ -100,19 +94,27 @@ int main(void)
 	DACC_init();
 	motor_init();
 	motor_read_init();
+	
 	int score = 0;
 	int no_goal_counter = 0;
-	
+	volatile uint16_t encoder_value = 0;
 // 	PIOD -> PIO_CODR |= (0x1 << 10);
 // 	DACC->DACC_CDR = 0x9FF;
+uint32_t mj2=0xFF;
 	while(1)
 	{
 		check_for_score(&score, &no_goal_counter);
 		slider_open_loop();
 		joystick_input();
 		//printf("joystick %d left %d right %d \n", P1000_data.joystick, P1000_data.left_slider, P1000_data.right_slider);
+		encoder_value = read_decoder();
+		printf("%d\n",mj2);
+		mj2=(PIOC->PIO_PDSR && 0x1FE)>>1;
+		//mj2=(PIOC->PIO_PDSR);
 	
-		printf("Value from the counter inside decoder = %d \n", read_decoder());
-		printf("PDSR %d\n",(int)(PIOC->PIO_PDSR) );
+		//printf("Value from the counter inside decoder = %d \n", encoder_value);
+		//printf("PDSR: %d\n",(uint16_t)((PIOC->PIO_PDSR && 0x1FE)>>1)); 
+		// printf("PDSR: %d\n",(uint16_t)(PIOC->PIO_PDSR && 0xFF));
+			
 	}
 }
