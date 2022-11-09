@@ -18,8 +18,10 @@
 #include "adc.h"
 #include "DAC_driver.h"
 #include "motor_controller.h"
+#include "pid.h"
 
 extern P1000_DATA P1000_data;
+extern pidData_t pid;
 
 void toggleLED1()
 {
@@ -97,7 +99,15 @@ int main(void)
 	
 	int score = 0;
 	int no_goal_counter = 0;
+
 	volatile uint16_t encoder_value = 0;
+
+	int16_t p_factor = 1;
+	int16_t i_factor = 1; 
+	int16_t d_factor = 0
+
+	pid_Init(p_factor, i_factor, d_factor, *pid);
+
 // 	PIOD -> PIO_CODR |= (0x1 << 10);
 // 	DACC->DACC_CDR = 0x9FF;
 uint32_t mj2=0xFF;

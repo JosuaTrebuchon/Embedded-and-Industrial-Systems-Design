@@ -3,18 +3,21 @@
 #define F_CPU 84000000L
 
 P1000_DATA P1000_data;
+pidData_t pid;
 
 void slider_open_loop()
 {
 	//printf("pos %d\n", *pos);
 	if (P1000_data.left_slider < 128)
 	{
+		//CODR = Clear Output Data Register
 		PIOD -> PIO_CODR |= (0x1 << 10);
 		DACC->DACC_CDR = 0x9FF;
 	}
 	
 	else
 	{
+		//SODR = Set Output Data Register
 		PIOD -> PIO_SODR |= (0x1 << 10);//&= ~(0x200);
 		DACC->DACC_CDR = 0x9FF;
 	}
@@ -63,4 +66,23 @@ uint16_t read_decoder()
 	
 	
 	return encoder;
+}
+
+
+void move_to_setpoint()
+{	
+	/*percentage of slider*/
+	uint16_t setPoint = 100*(P1000_data.left_slider/255);
+
+	int16_t measured_value = read_decoder();
+	int16_t motor_input = pid_Controller(setPoint, measured_value, *pid);
+
+	/*
+		set register to motor_value? 
+		PIOD -> PIO_CODR |= (0x1 << 10);
+		DACC->DACC_CDR = 0x9FF;
+	
+	*/
+
+
 }
