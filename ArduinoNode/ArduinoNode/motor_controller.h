@@ -4,6 +4,7 @@
 #include "can_interrupt.h"
 #include "can_controller.h"
 #include "DAC_driver.h"
+#include "pid.h"
 
 #define MJ2_DATA_Msk 0x1FE
 
