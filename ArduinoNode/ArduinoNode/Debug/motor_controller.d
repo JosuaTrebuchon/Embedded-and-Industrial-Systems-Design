@@ -83,7 +83,7 @@ motor_controller.d motor_controller.o: .././motor_controller.c \
  C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.50\include/instance/gpbr.h \
  C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.50\include/pio/sam3x8e.h \
  .././pwm.h .././printf-stdarg.h .././can_interrupt.h \
- .././can_controller.h .././DAC_driver.h .././dacc.h
+ .././can_controller.h .././DAC_driver.h .././dacc.h .././pid.h
 
 .././motor_controller.h:
 
@@ -262,3 +262,5 @@ C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.50\include/p
 .././DAC_driver.h:
 
 .././dacc.h:
+
+.././pid.h:

@@ -18,6 +18,8 @@ main.c
 
 motor_controller.c
 
+pid.c
+
 printf-stdarg.c
 
 pwm_driver.c

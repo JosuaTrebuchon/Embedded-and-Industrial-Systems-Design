@@ -28,6 +28,7 @@ typedef struct P1000_data_t
 	int joystick;
 	int left_slider;
 	int right_slider;
+	int joystick_button;
 	
 } P1000_DATA;
 

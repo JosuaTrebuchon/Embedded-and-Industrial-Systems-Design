@@ -83,7 +83,8 @@ main.d main.o: .././main.c \
  C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.50\include/pio/sam3x8e.h \
  .././printf-stdarg.h .././uart.h .././can_interrupt.h \
  .././can_controller.h .././pwm_driver.h .././pwm.h .././IR_driver.h \
- .././adc.h .././DAC_driver.h .././dacc.h .././motor_controller.h
+ .././adc.h .././DAC_driver.h .././dacc.h .././motor_controller.h \
+ .././pid.h
 
 C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.50\include/sam.h:
 
@@ -270,3 +271,5 @@ C:\Program\ Files\ (x86)\Atmel\Studio\7.0\Packs\atmel\SAM3X_DFP\1.0.50\include/p
 .././dacc.h:
 
 .././motor_controller.h:
+
+.././pid.h:
