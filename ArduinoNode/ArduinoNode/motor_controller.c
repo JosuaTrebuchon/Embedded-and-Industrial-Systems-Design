@@ -143,23 +143,27 @@ void move_to_setpoint()
 	if(motor_input > 0)
 	{
 		PIOD -> PIO_CODR |= (0x1 << 10);// Set direction to right
-		dir =0;
+		dir =1;
 	}if(motor_input < 0)
 	{
 		PIOD -> PIO_SODR |= (0x1 << 10); // Set direction to left
-		dir =1;
+		dir =0;
 	}
-	if(motor_input == 0){
-		DACC->DACC_CDR = 0x00;
-	}
+
 
 	if (motor_input < 0) motor_input *= -1;
 	 	
-	speed = ((0xFFF - 0x500) * ((float) motor_input / 100.0)) + 0x500;
+	speed = ((0xFFF - 0x580) * ((float) motor_input / 100.0)) + 0x580; //min 580
+	
+	if(motor_input == 0)
+	{
+		//DACC->DACC_CDR = 0x00;
+		speed=0x00;
+	}
 	
 	DACC->DACC_CDR = speed;
 	
-	printf("setpoint: %d measured: %d pid out: %d, speed: %d dir: %d\n", P1000_data.left_slider, motor_per, motor_input, speed, dir);
+	//printf("setpoint: %d measured: %d pid out: %d, speed: %d dir: %d\n", setPoint, motor_per, motor_input, speed, dir);
 
 
 }
@@ -179,21 +183,31 @@ void reset_encoder(void)
 
 void solenoid_init()
 {
-	/* Enabble PIOC12 */
+	/* Enable PIOC12 */
 	PIOC->PIO_PER |= (0x1 << 12);
 
-	/* Enabble PIOC12 as output */
+	/* Enable PIOC12 as output */
 	PIOC->PIO_OER |= (0x1 << 12);	
+	
+	// PIOC->PIO_PUER |= (0x1 << 12);
+	
+	/* Set PIOC12 high PIN51*/
+	PIOC->PIO_SODR |= (0x1 << 12);
+	
+
+	
 }
 
 
 void solenoid_impulse()
 {
-	/* Set PIOC12 High */
+	/* Set PIOC12 Low PIN51*/
+	PIOC->PIO_CODR |= (0x1 << 12);
+	
+	Delay(100);
+	
+	/* Set PIOC12 High PIN51*/
 	PIOC->PIO_SODR |= (0x1 << 12);
 	
-	Delay(1);
-	
-	/* Set PIOC12 Low */
-	PIOC->PIO_CODR |= (0x1 << 12);
+	Delay(270);
 }

@@ -43,27 +43,31 @@ ISR(TIMER1_OVF_vect)
 /************************************************************************/
 /* Interrupt catching BUSY signal for ADC data read                     */
 /************************************************************************/
+int adc_read_flag = 0;
 ISR(INT2_vect)
 {
-	ADC_read(ADC_data);
+	adc_read_flag = 1;
 	// xmem_write(0x52, 0x1400);
 
 }
+
+int joystick_button_flag = 0;
 /************************************************************************/
 /* Interrupt catching joystick button falling edge                      */
 /************************************************************************/
 ISR(INT0_vect)
 {
-	printf("BUTTON pressed Column: %d, Page: %d\n", y_arrow, page_arrow);
+	//printf("BUTTON pressed Column: %d, Page: %d\n", 0, 0);
+	joystick_button_flag = 1;
 }
 
 /************************************************************************/
 /* Interrupt catching INT1 VAN controller low level                     */
 /************************************************************************/
-ISR(INT1_vect)
-{
-	printf("CAN controller interrupt caught /!\\\n");
-}
+// ISR(INT1_vect)
+// {
+// 	printf("CAN controller interrupt caught /!\\\n");
+// }
 
 int main(void)
 {
@@ -75,6 +79,9 @@ int main(void)
 	PWM_Init();
 	ADC_init();
 	mcp2515_init();
+	pushButton_init();
+	
+	sei();
 	
 	float x_per;
 	float y_per;
@@ -89,23 +96,37 @@ int main(void)
 	int right_pos;
 	(left_pos) = 0;
 	(right_pos) = 0;
+	
+	
 	while (1)
-	{
-		
+	{	
 		joystick_analog_position(&x_per, &y_per, ADC_data, &calibrated);
 		position = pos_read(&x_per, &y_per);
 		
 		slider_position(&left_pos, &right_pos, ADC_data);
 
 		P1000_msg.id = 1;
-		P1000_msg.data_length = 3;
+		P1000_msg.data_length = 4;
 		P1000_msg.data[0] = position;
 		P1000_msg.data[1] = left_pos;
 		P1000_msg.data[2] = right_pos;
-
-		can_message_send(&P1000_msg);
+		P1000_msg.data[3] = joystick_button_flag;
+		joystick_button_flag = 0;
 		
-		_delay_ms(1000);
+		
+		
+		
+		can_message_send(&P1000_msg);
+		if(adc_read_flag)
+		{
+			ADC_read(ADC_data);
+			adc_read_flag = 0;
+		}		
+		//_delay_ms(100);
+		
+		//_delay_ms(5);
+	
+
 	}
 
 

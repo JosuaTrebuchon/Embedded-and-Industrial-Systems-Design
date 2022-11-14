@@ -45,16 +45,18 @@ int IR_read(void)
 	{
 		return 0;
 	}
-	
+	//printf("no goal \n");
 	return 1;
 }
 
+
 void check_for_score(int* score, int* no_goal_counter)
 {
+	
 	int no_goal = IR_read();
 	*no_goal_counter = *no_goal_counter + no_goal;
 	
-	if (*no_goal_counter > 1000000 && no_goal == 0)
+	if (*no_goal_counter > 10 && no_goal == 0)
 	{
 		(*score)++;
 		printf("GOAL! score = %d\n", *score);

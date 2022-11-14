@@ -49,12 +49,13 @@ int main(void)
 	ADC_init();
 	DACC_init();
 	motor_init();
+	solenoid_init();
 
 	int score = 0;
 	int no_goal_counter = 0;
 
-	int16_t p_factor = 5;
-	int16_t i_factor = 5; 
+	int16_t p_factor = 100; //45 P only stable
+	int16_t i_factor = 2; 
 	int16_t d_factor = 0;
 
 	pid_Init(p_factor, i_factor, d_factor, &pid);	
@@ -63,22 +64,19 @@ int main(void)
 	//reset_encoder();
 		//PIOD -> PIO_SODR |= (0x1 << 10);// Set direction to right
 	
-	volatile int encoder = 0;
+	//volatile int encoder = 0;
 	while(1)
 	{	
 		check_for_score(&score, &no_goal_counter);
 		joystick_input();
 		//printf("joystick %d left %d right %d \n", P1000_data.joystick, P1000_data.left_slider, P1000_data.right_slider);
-		
-		//slider_open_loop();
-	
-		//encoder = read_encoder();
 		//printf("Value from the counter inside decoder = %d \n", encoder);
 		
 		move_to_setpoint();
 		
 		if(P1000_data.joystick_button == 1)
 		{
+			//printf("recieved CAN message %d \n",1);
 			solenoid_impulse();
 		}
 		
