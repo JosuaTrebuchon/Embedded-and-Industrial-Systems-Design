@@ -11,7 +11,7 @@ float x_joystick_calibrate=128;
 float y_joystick_calibrate=128; void joystick_analog_position(float* x_per, float* y_per, uint8_t* ADC_data, int* calibrated)
 {
 	ADC_read(ADC_data);
-	xmem_write(0x52, 0x1400);
+	xmem_write(0x00, 0x1400);
 	/*
 	if(!(*calibrated))
 	{
@@ -30,7 +30,7 @@ float y_joystick_calibrate=128; void joystick_analog_position(float* x_per, fl
 void slider_position(int *left_per, int *right_per, uint8_t* ADC_data)
 {
 	ADC_read(ADC_data);
-	xmem_write(0x52, 0x1400);
+	xmem_write(0x00, 0x1400);
 	//printf( "ADC_data[%d] = %d, ADC_data[%d] = %d\n", 1, (int)ADC_data [1],2, (int)ADC_data [2]);
 	*left_per = ADC_data[1];
 	*right_per = ADC_data[2];

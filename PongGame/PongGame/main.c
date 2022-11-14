@@ -97,9 +97,29 @@ int main(void)
 	(left_pos) = 0;
 	(right_pos) = 0;
 	
+	uint8_t size_arrow;
+	oled_init();
+	oled_reset();
+	
+	oled_home();
+	//
+	oled_reset();
+	
+	go_to_page(2);
+	go_to_col(30);
+	oled_print("Start");
+	go_to_page(3);
+	go_to_col(30);
+	oled_print("PingPong");
+	go_to_page(4);
+	go_to_col(30);
+	oled_print("End game");
+	
+	oled_print_arrow(page_arrow, y_arrow, 0);
 	
 	while (1)
 	{	
+
 		joystick_analog_position(&x_per, &y_per, ADC_data, &calibrated);
 		position = pos_read(&x_per, &y_per);
 		
@@ -122,6 +142,47 @@ int main(void)
 			ADC_read(ADC_data);
 			adc_read_flag = 0;
 		}		
+		
+		switch(position)
+		{
+			case UP:
+			printf("UP\n");
+			oled_print_arrow(page_arrow, y_arrow, 1);
+			page_arrow -= size_arrow;
+			if(page_arrow < 0) page_arrow = 7;
+			oled_print_arrow(page_arrow, y_arrow, 0);
+			break;
+			case DOWN:
+			printf("DOWN\n");
+			oled_print_arrow(page_arrow, y_arrow, 1);
+			page_arrow += size_arrow;
+			if(page_arrow > 7) page_arrow = 0;
+			oled_print_arrow(page_arrow, y_arrow, 0);
+			break;
+			case RIGHT:
+			printf("RIGHT\n");
+			
+			oled_print_arrow(page_arrow, y_arrow, 1);
+			y_arrow += 5;
+			oled_print_arrow(page_arrow, y_arrow, 0);
+			break;
+			
+			case LEFT:
+			
+			printf("LEFT\n");
+			oled_print_arrow(page_arrow, y_arrow, 1);
+			y_arrow -= 5;
+			oled_print_arrow(page_arrow, y_arrow, 0);
+			break;
+			
+			case NEUTRAL:
+			printf("NEUTRAL\n");
+			break;
+			default:
+			printf("Not working ?\n");
+			break;
+		}
+		
 		//_delay_ms(100);
 		
 		//_delay_ms(5);

@@ -237,8 +237,7 @@ void oled_print_test()
 extern int y_arrow;
 extern int page_arrow;
 
-void oled_movement_test()
-{
+/*
 	uint8_t size_arrow;
 	
 	float x_per;
@@ -261,7 +260,15 @@ void oled_movement_test()
 	ADC_init();
 	
 	sei(); // Enable all interrupt
-
+	*/
+void oled_movement_test()
+{
+		uint8_t size_arrow;
+		
+		float x_per;
+		float y_per;
+		pos_t position;
+		int calibrated = 0;
 	size_arrow = 1;
 	page_arrow = 2;
 	y_arrow = 0;

@@ -31,9 +31,9 @@ void oled_init()
 	xmem_write(0xa4, 0x1000); //out follows RAM content
 	xmem_write(0xa6, 0x1000); //set normal display
 	
-	//xmem_write(0xb0, 0x1000);
-	//xmem_write(0x00, 0x1000);
-
+	xmem_write(0x00, 0x1000);
+	//xmem_write(0x10, 0x1000);
+	//xmem_write(0x52, 0x1000);
 	//
 	
 	xmem_write(0xaf, 0x1000); // display on
@@ -47,7 +47,7 @@ void oled_reset()
 	uint8_t page_num = 0xb0;
 	
 	//start location in page
-	// xmem_write(0x40, 0x1000);
+	xmem_write(0x40, 0x1000);
 	
 	//page number
 	xmem_write(page_num, 0x1000);
