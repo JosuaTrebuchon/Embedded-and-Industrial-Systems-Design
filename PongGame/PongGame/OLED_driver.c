@@ -1,5 +1,9 @@
 #include "OLED_driver.h"
 
+/**
+ * @brief 
+ * 
+ */
 void oled_init() {
 
   xmem_write(0xae, 0x1000); // display off
@@ -38,6 +42,10 @@ void oled_init() {
   xmem_write(0xaf, 0x1000); // display on
 }
 
+/**
+ * @brief 
+ * 
+ */
 void oled_reset() {
 
   int num_pages = 8;
@@ -65,8 +73,14 @@ void oled_reset()
 {
         xmem_write(0xa7, 0x1000);
         xmem_write(0xa6, 0x1000);
-        
+        
+
 }*/
+/**
+ * @brief 
+ * 
+ * @param n 
+ */
 void write_char(char n) {
   unsigned char segment[8] = {0};
 
@@ -76,6 +90,10 @@ void write_char(char n) {
   }
 }
 
+/**
+ * @brief 
+ * 
+ */
 void oled_home() {
   xmem_write(0xb0, 0x1000);
 
@@ -89,6 +107,11 @@ void go_to_page(int i) // 0-7
   xmem_write(pos, 0x1000);
 }
 
+/**
+ * @brief 
+ * 
+ * @param i 
+ */
 void go_to_col(uint8_t i) // 0-127
 {
   /*
@@ -105,6 +128,11 @@ void go_to_col(uint8_t i) // 0-127
           xmem_write(0x17, 0x1000);*/
 }
 
+/**
+ * @brief 
+ * 
+ * @param i 
+ */
 void clear_line(int i) {
   for (int col = 0; col < 128; col++) {
     go_to_page(i);
@@ -113,6 +141,11 @@ void clear_line(int i) {
   }
 }
 
+/**
+ * @brief 
+ * 
+ * @param word 
+ */
 void oled_print(char *word) {
   int i = 0;
   while (word[i] != '\0') {
@@ -121,6 +154,13 @@ void oled_print(char *word) {
   }
 }
 
+/**
+ * @brief 
+ * 
+ * @param row 
+ * @param col 
+ * @param clear 
+ */
 void oled_print_arrow(int row, int col, uint8_t clear) {
   go_to_col(col);
   go_to_page(row);

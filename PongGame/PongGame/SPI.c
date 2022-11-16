@@ -1,7 +1,10 @@
 #include "SPI.h"
 
 // start/stop with SPDR
-
+/**
+ * @brief 
+ * 
+ */
 void spi_init(void) {
   /* Set SS, MOSI and SCK output, all others input */
   DDRB |= (1 << DDB5) | (1 << DDB7) | (1 << DDB4);
@@ -9,6 +12,11 @@ void spi_init(void) {
   SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR0);
 }
 
+/**
+ * @brief 
+ * 
+ * @param cData 
+ */
 void spi_transmit(char cData) {
   /* Start transmission */
   SPDR = cData;
@@ -17,6 +25,10 @@ void spi_transmit(char cData) {
     ;
 }
 
+/**
+ * @brief 
+ * 
+ */
 void spi_slave_init(void) {
   /* Set MISO output, all others input */
   DDRB |= (1 << DDB6);
@@ -24,6 +36,11 @@ void spi_slave_init(void) {
   SPCR = (1 << SPE);
 }
 
+/**
+ * @brief 
+ * 
+ * @return char 
+ */
 char spi_slave_receive(void) {
   /* Wait for reception complete */
   while (!(SPSR & (1 << SPIF)))

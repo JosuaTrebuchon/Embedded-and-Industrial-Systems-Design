@@ -1,5 +1,9 @@
 #include "ADC_driver.h"
 
+/**
+ * @brief 
+ * 
+ */
 void PWM_Init() {
   set_bit(DDRD, DDD5);
 

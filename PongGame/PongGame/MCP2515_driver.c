@@ -1,5 +1,10 @@
 #include "MCP2515_driver.h"
 
+/**
+ * @brief 
+ * 
+ * @return uint8_t 
+ */
 uint8_t mcp2515_init() {
   // stdout = &mystdout;
   char value;
@@ -31,6 +36,12 @@ uint8_t mcp2515_init() {
   return 0;
 }
 
+/**
+ * @brief 
+ * 
+ * @param addr 
+ * @return char 
+ */
 char mcp2515_read(unsigned char addr) {
   clear_bit(PORTB, PB4);
 
@@ -49,6 +60,12 @@ char mcp2515_read(unsigned char addr) {
   return data;
 }
 
+/**
+ * @brief 
+ * 
+ * @param addr 
+ * @param data 
+ */
 void mcp2515_write(unsigned char addr, unsigned char data) {
   clear_bit(PORTB, PB4);
 
@@ -63,6 +80,12 @@ void mcp2515_write(unsigned char addr, unsigned char data) {
   set_bit(PORTB, PB4);
 }
 
+/**
+ * @brief 
+ * 
+ * @param transmit_buffer 
+ */
+*/
 void mcp2515_request_to_send(unsigned char transmit_buffer)
 /*	#define MCP_RTS_TX0		0x81
         #define MCP_RTS_TX1		0x82
@@ -77,6 +100,11 @@ void mcp2515_request_to_send(unsigned char transmit_buffer)
   set_bit(PORTB, PB4);
 }
 
+/**
+ * @brief 
+ * 
+ * @return char 
+ */
 char mcp2515_read_status() {
   clear_bit(PORTB, PB4);
 
@@ -91,6 +119,13 @@ char mcp2515_read_status() {
   return data;
 }
 
+/**
+ * @brief 
+ * 
+ * @param addr 
+ * @param mask 
+ * @param data 
+ */
 void mcp2515_bit_modify(unsigned char addr, unsigned char mask,
                         unsigned char data) {
   clear_bit(PORTB, PB4);
@@ -103,6 +138,10 @@ void mcp2515_bit_modify(unsigned char addr, unsigned char mask,
   set_bit(PORTB, PB4);
 }
 
+/**
+ * @brief 
+ * 
+ */
 void mcp2515_reset() {
   clear_bit(PORTB, PB4);
 

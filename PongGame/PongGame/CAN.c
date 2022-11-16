@@ -1,5 +1,10 @@
 #include "CAN.h"
 
+/**
+ * @brief 
+ * 
+ * @param message 
+ */
 void can_message_send(can_message *message) {
   /*
   mcp2515_write(TXB0SIDL, (message->id<<5);
@@ -20,6 +25,11 @@ void can_message_send(can_message *message) {
   // message transmitted when TXBnCTRL.TXREQ cleared and CANINTF.TXnIF set
 }
 
+/**
+ * @brief 
+ * 
+ * @return can_message 
+ */
 can_message can_data_recieve() {
   can_message message;
   message.id = (mcp2515_read(RXB0SIDL) >> 5) + mcp2515_read(MCP_RXB0SIDH << 3);

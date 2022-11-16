@@ -1,5 +1,10 @@
 #include "ATmega162_driver.h"
 
+/**
+ * @brief 
+ * 
+ * @param ubrr 
+ */
 void USART_Init(unsigned int ubrr) {
   /* Set baud rate */
   UBRR0H = (unsigned char)(ubrr >> 8);
@@ -14,6 +19,11 @@ void USART_Init(unsigned int ubrr) {
   UCSR0C = (1 << URSEL0) | (1 << USBS0) | (3 << UCSZ00);
 }
 
+/**
+ * @brief 
+ * 
+ * @param data 
+ */
 void USART_TX(unsigned char data) {
   while (!(UCSR0A & (1 << UDRE0)))
     ;
@@ -34,6 +44,13 @@ unsigned char USART_RX() {
         https://www.nongnu.org/avr-libc/user-manual/group__avr__stdio.html#gaea2b6be92ead4673bc487b271b7227fb
 */
 FILE mystdout = FDEV_SETUP_STREAM(uart_putchar, NULL, _FDEV_SETUP_WRITE);
+/**
+ * @brief 
+ * 
+ * @param c 
+ * @param stream 
+ * @return int 
+ */
 int uart_putchar(char c, FILE *stream) {
   if (c == '\n')
     uart_putchar('\r', stream);
@@ -51,6 +68,12 @@ void xmem_init(void) {
   SFIOR |= (1 << XMM2);
 }
 
+/**
+ * @brief 
+ * 
+ * @param data 
+ * @param addr 
+ */
 void xmem_write(uint8_t data, uint16_t addr) {
 
   stdout = &mystdout;
@@ -60,12 +83,23 @@ void xmem_write(uint8_t data, uint16_t addr) {
   // printf( "value stored at ext_mem[0x%08x] is 0x%08x, should be 0x%08x\n",
   // addr, retreived_value, data);
 }
+
+/**
+ * @brief 
+ * 
+ * @param addr 
+ * @return uint8_t 
+ */
 uint8_t xmem_read(uint16_t addr) {
   volatile char *ext_mem = (char *)BASE_ADDRESS;
   uint8_t ret_val = ext_mem[addr];
   return ret_val;
 }
 
+/**
+ * @brief 
+ * 
+ */
 void pushButton_init() {
   clear_bit(
       DDRD,
@@ -79,6 +113,10 @@ void pushButton_init() {
   set_bit(GICR, INT0); /* Enable INT0 interrupt */
 }
 
+/**
+ * @brief 
+ * 
+ */
 void interrupt_MCP2515_init() {
   clear_bit(DDRD, DDD3); // set PD3 as Input to use the INT1 Interrupt for CAN
                          // controller interrupt
