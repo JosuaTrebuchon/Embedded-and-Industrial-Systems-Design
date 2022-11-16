@@ -6,38 +6,33 @@
  * For use in TTK4155 Embedded and Industrial Computer Systems Design
  * NTNU - Norwegian University of Science and Technology
  *
- */ 
-
+ */
 
 #ifndef CAN_CONTROLLER_H_
 #define CAN_CONTROLLER_H_
 
 #include <stdint.h>
 
-
-typedef struct can_message_t
-{
-	uint16_t id;
-	char data_length;
-	char data[8];
+typedef struct can_message_t {
+  uint16_t id;
+  char data_length;
+  char data[8];
 } CAN_MESSAGE;
 
+typedef struct P1000_data_t {
+  int joystick;
+  int left_slider;
+  int right_slider;
+  int joystick_button;
 
-typedef struct P1000_data_t
-{
-	int joystick;
-	int left_slider;
-	int right_slider;
-	int joystick_button;
-	
 } P1000_DATA;
 
 uint8_t can_init_def_tx_rx_mb(uint32_t can_br);
 uint8_t can_init(uint32_t can_br, uint8_t num_tx_mb, uint8_t num_rx_mb);
 
-uint8_t can_send(CAN_MESSAGE* can_msg, uint8_t mailbox_id);
-uint8_t can_receive(CAN_MESSAGE* can_msg, uint8_t mailbox_id);
+uint8_t can_send(CAN_MESSAGE *can_msg, uint8_t mailbox_id);
+uint8_t can_receive(CAN_MESSAGE *can_msg, uint8_t mailbox_id);
 
-void update_P1000(P1000_DATA * data, CAN_MESSAGE* can_message);
+void update_P1000(P1000_DATA *data, CAN_MESSAGE *can_message);
 
 #endif /* CAN_CONTROLLER_H_ */

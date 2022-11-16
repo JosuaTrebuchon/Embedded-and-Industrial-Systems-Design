@@ -1,10 +1,10 @@
-#include "sam.h"
-#include "pwm.h"
-#include "printf-stdarg.h"
-#include "can_interrupt.h"
-#include "can_controller.h"
 #include "DAC_driver.h"
+#include "can_controller.h"
+#include "can_interrupt.h"
 #include "pid.h"
+#include "printf-stdarg.h"
+#include "pwm.h"
+#include "sam.h"
 
 #define MJ2_DATA_Msk 0x1FE
 
@@ -18,5 +18,3 @@ void move_to_setpoint(void);
 
 void solenoid_init(void);
 void solenoid_impulse(void);
-
-
