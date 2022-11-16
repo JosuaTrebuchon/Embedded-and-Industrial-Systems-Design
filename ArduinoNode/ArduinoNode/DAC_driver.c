@@ -1,5 +1,9 @@
 #include "DAC_driver.h"
 
+/**
+ * @brief 
+ * 
+ */
 void DACC_init(void) {
   PMC->PMC_PCER1 |= PMC_PCER1_PID38;
 

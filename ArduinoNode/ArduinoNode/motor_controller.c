@@ -5,6 +5,10 @@
 P1000_DATA P1000_data;
 pidData_t pid;
 
+/**
+ * @brief 
+ * 
+ */
 void slider_open_loop() {
   // printf("pos %d\n", *pos);
   if (P1000_data.left_slider < 128) {
@@ -20,6 +24,10 @@ void slider_open_loop() {
   }
 }
 
+/**
+ * @brief 
+ * 
+ */
 void init_motor_position() {
   // SODR = Set Output Data Register
   PIOD->PIO_SODR |= (0x1 << 10); // Set direction to right
@@ -34,6 +42,11 @@ void init_motor_position() {
   reset_encoder();
 }
 
+/**
+ * @brief 
+ * 
+ * @param num 
+ */
 void Delay(int num) {
   volatile float f = 1.0f;
 
@@ -42,6 +55,10 @@ void Delay(int num) {
     f *= 1.1f;
 }
 
+/**
+ * @brief 
+ * 
+ */
 void motor_init() {
   /*Pull up */
   PIOC->PIO_PUDR |= (0x1 << 8) | (0x1 << 7) | (0x1 << 6) | (0x1 << 5) |
@@ -76,6 +93,11 @@ void motor_init() {
                    (0x1 << 4) | (0x1 << 3) | (0x1 << 2) | (0x1 << 1);
 }
 
+/**
+ * @brief 
+ * 
+ * @return uint16_t 
+ */
 uint16_t read_encoder() {
   uint16_t encoder = 0;
 
@@ -103,6 +125,10 @@ uint16_t read_encoder() {
   return encoder;
 }
 
+/**
+ * @brief 
+ * 
+ */
 void move_to_setpoint() {
   int speed = 0;
   int dir = 0;
@@ -154,6 +180,10 @@ void move_to_setpoint() {
   // setPoint, motor_per, motor_input, speed, dir);
 }
 
+/**
+ * @brief 
+ * 
+ */
 void reset_encoder(void) {
   /* Clearing the not RST (Reset encoder) */
   PIOD->PIO_CODR |= (0x1 << 1);
@@ -177,6 +207,10 @@ void solenoid_init() {
   PIOC->PIO_SODR |= (0x1 << 12);
 }
 
+/**
+ * @brief 
+ * 
+ */
 void solenoid_impulse() {
   /* Set PIOC12 Low PIN51*/
   PIOC->PIO_CODR |= (0x1 << 12);

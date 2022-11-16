@@ -1,5 +1,9 @@
 #include "IR_driver.h"
 
+/**
+ * @brief 
+ * 
+ */
 void peripheral_init_adc() {
   // pin A11
   // CH11
@@ -12,6 +16,10 @@ void peripheral_init_adc() {
   PMC->PMC_PCER1 |= PMC_PCER1_PID37;
 }
 
+/**
+ * @brief 
+ * 
+ */
 void ADC_init(void) {
   /*Reset ADC*/
   ADC->ADC_CR |= ADC_CR_SWRST;
@@ -33,6 +41,11 @@ void ADC_init(void) {
   ADC->ADC_EMR |= ADC_EMR_TAG;
 }
 
+/**
+ * @brief 
+ * 
+ * @return int 
+ */
 int IR_read(void) {
   int adc_out = (int)(ADC->ADC_LCDR & ADC_LCDR_LDATA_Msk);
 
@@ -43,6 +56,12 @@ int IR_read(void) {
   return 1;
 }
 
+/**
+ * @brief 
+ * 
+ * @param score 
+ * @param no_goal_counter 
+ */
 void check_for_score(int *score, int *no_goal_counter) {
 
   int no_goal = IR_read();

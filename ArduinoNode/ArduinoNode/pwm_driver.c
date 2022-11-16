@@ -2,6 +2,10 @@
 
 P1000_DATA P1000_data;
 
+/**
+ * @brief 
+ * 
+ */
 void peripheral_init_pwm(){
 	
 	
@@ -50,6 +54,10 @@ void pwm_duty_update(int PWM_dutycycle_tick_NEW)
 	}
 }
 
+/**
+ * @brief 
+ * 
+ */
 void joystick_input(void)
 {
 
