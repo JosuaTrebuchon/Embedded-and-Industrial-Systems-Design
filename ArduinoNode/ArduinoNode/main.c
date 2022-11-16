@@ -54,8 +54,8 @@ int main(void)
 	int score = 0;
 	int no_goal_counter = 0;
 
-	int16_t p_factor = 100; //45 P only stable
-	int16_t i_factor = 2; 
+	int16_t p_factor = 20; //45 P only stable START 100
+	int16_t i_factor = 1; 
 	int16_t d_factor = 0;
 
 	pid_Init(p_factor, i_factor, d_factor, &pid);	
@@ -73,10 +73,10 @@ int main(void)
 		//printf("Value from the counter inside decoder = %d \n", encoder);
 		
 		move_to_setpoint();
-		
+		//printf(" Button: %d \n",P1000_data.joystick_button);
 		if(P1000_data.joystick_button == 1)
 		{
-			//printf("recieved CAN message %d \n",1);
+
 			solenoid_impulse();
 		}
 		

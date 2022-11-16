@@ -19,8 +19,8 @@
 #include "CAN.h"
 
 extern uint8_t ADC_data [4];
-int y_arrow;
-int page_arrow;
+
+
 
 
 /************************************************************************/
@@ -51,6 +51,7 @@ ISR(INT2_vect)
 
 }
 
+extern int joystick_button_flag ;
 int joystick_button_flag = 0;
 /************************************************************************/
 /* Interrupt catching joystick button falling edge                      */
@@ -83,13 +84,14 @@ int main(void)
 	
 	sei();
 	
+	//joystick_button_flag=0;
 	float x_per;
 	float y_per;
 	pos_t position;
 	position = 0;
 	(x_per) = 0;
 	(y_per) = 0;
-	int calibrated = 0;
+
 	can_message P1000_msg;
 	
 	int left_pos;
@@ -97,99 +99,28 @@ int main(void)
 	(left_pos) = 0;
 	(right_pos) = 0;
 	
-	uint8_t size_arrow;
-	oled_init();
-	oled_reset();
-	
-	oled_home();
-	//
-	oled_reset();
-	
-	go_to_page(2);
-	go_to_col(30);
-	oled_print("Start");
-	go_to_page(3);
-	go_to_col(30);
-	oled_print("PingPong");
-	go_to_page(4);
-	go_to_col(30);
-	oled_print("End game");
-	
-	oled_print_arrow(page_arrow, y_arrow, 0);
-	
-	while (1)
-	{	
-
-		joystick_analog_position(&x_per, &y_per, ADC_data, &calibrated);
+	oled_menu(&x_per, &y_per, &position, &left_pos, &right_pos,  ADC_data);
+	while(1){
+		joystick_analog_position(&x_per, &y_per, ADC_data);
 		position = pos_read(&x_per, &y_per);
 		
 		slider_position(&left_pos, &right_pos, ADC_data);
+	P1000_msg.id = 1;
+	P1000_msg.data_length = 4;
+	P1000_msg.data[0] = position;
+	P1000_msg.data[1] = left_pos;
+	P1000_msg.data[2] = right_pos;
+	P1000_msg.data[3] = joystick_button_flag;
+	joystick_button_flag = 0;
+	printf("setpoint: %d button: %d \n", P1000_msg.data[1], P1000_msg.data[3]);
 
-		P1000_msg.id = 1;
-		P1000_msg.data_length = 4;
-		P1000_msg.data[0] = position;
-		P1000_msg.data[1] = left_pos;
-		P1000_msg.data[2] = right_pos;
-		P1000_msg.data[3] = joystick_button_flag;
-		joystick_button_flag = 0;
-		
-		
-		
-		
-		can_message_send(&P1000_msg);
-		if(adc_read_flag)
-		{
-			ADC_read(ADC_data);
-			adc_read_flag = 0;
-		}		
-		
-		switch(position)
-		{
-			case UP:
-			printf("UP\n");
-			oled_print_arrow(page_arrow, y_arrow, 1);
-			page_arrow -= size_arrow;
-			if(page_arrow < 0) page_arrow = 7;
-			oled_print_arrow(page_arrow, y_arrow, 0);
-			break;
-			case DOWN:
-			printf("DOWN\n");
-			oled_print_arrow(page_arrow, y_arrow, 1);
-			page_arrow += size_arrow;
-			if(page_arrow > 7) page_arrow = 0;
-			oled_print_arrow(page_arrow, y_arrow, 0);
-			break;
-			case RIGHT:
-			printf("RIGHT\n");
-			
-			oled_print_arrow(page_arrow, y_arrow, 1);
-			y_arrow += 5;
-			oled_print_arrow(page_arrow, y_arrow, 0);
-			break;
-			
-			case LEFT:
-			
-			printf("LEFT\n");
-			oled_print_arrow(page_arrow, y_arrow, 1);
-			y_arrow -= 5;
-			oled_print_arrow(page_arrow, y_arrow, 0);
-			break;
-			
-			case NEUTRAL:
-			printf("NEUTRAL\n");
-			break;
-			default:
-			printf("Not working ?\n");
-			break;
-		}
-		
-		//_delay_ms(100);
-		
-		//_delay_ms(5);
-	
-
+	can_message_send(&P1000_msg);
+	if(adc_read_flag)
+	{
+		ADC_read(ADC_data);
+		adc_read_flag = 0;
 	}
 
-
+	}
 }
 

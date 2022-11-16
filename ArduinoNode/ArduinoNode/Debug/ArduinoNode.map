@@ -2300,19 +2300,19 @@ OUTPUT(ArduinoNode.elf elf32-littlearm)
  .comment       0x00000059       0x5a pwm_driver.o
  .comment       0x00000059       0x5a uart.o
 
-.debug_info     0x00000000     0x6db7
+.debug_info     0x00000000     0x6db6
  .debug_info    0x00000000      0xdf2 can_controller.o
  .debug_info    0x00000df2      0xfff can_interrupt.o
  .debug_info    0x00001df1      0x538 DAC_driver.o
  .debug_info    0x00002329      0x74e Device_Startup/startup_sam3xa.o
  .debug_info    0x00002a77      0x444 Device_Startup/system_sam3xa.o
  .debug_info    0x00002ebb      0x9e9 IR_driver.o
- .debug_info    0x000038a4      0x7e7 main.o
- .debug_info    0x0000408b      0xc7b motor_controller.o
- .debug_info    0x00004d06      0x240 pid.o
- .debug_info    0x00004f46      0x60b printf-stdarg.o
- .debug_info    0x00005551      0xc1b pwm_driver.o
- .debug_info    0x0000616c      0xc4b uart.o
+ .debug_info    0x000038a4      0x7e6 main.o
+ .debug_info    0x0000408a      0xc7b motor_controller.o
+ .debug_info    0x00004d05      0x240 pid.o
+ .debug_info    0x00004f45      0x60b printf-stdarg.o
+ .debug_info    0x00005550      0xc1b pwm_driver.o
+ .debug_info    0x0000616b      0xc4b uart.o
 
 .debug_abbrev   0x00000000     0x1307
  .debug_abbrev  0x00000000      0x23b can_controller.o

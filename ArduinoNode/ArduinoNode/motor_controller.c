@@ -153,7 +153,7 @@ void move_to_setpoint()
 
 	if (motor_input < 0) motor_input *= -1;
 	 	
-	speed = ((0xFFF - 0x580) * ((float) motor_input / 100.0)) + 0x580; //min 580
+	speed = ((0xFFF - 0x450) * ((float) motor_input / 100.0)) + 0x450; //min 580
 	
 	if(motor_input == 0)
 	{
@@ -163,7 +163,7 @@ void move_to_setpoint()
 	
 	DACC->DACC_CDR = speed;
 	
-	//printf("setpoint: %d measured: %d pid out: %d, speed: %d dir: %d\n", setPoint, motor_per, motor_input, speed, dir);
+	//printf("setpoint: %d measured: %d pid out: %d, speed: %d dir: %d", setPoint, motor_per, motor_input, speed, dir);
 
 
 }
@@ -209,5 +209,6 @@ void solenoid_impulse()
 	/* Set PIOC12 High PIN51*/
 	PIOC->PIO_SODR |= (0x1 << 12);
 	
-	Delay(270);
+	//Delay(270);
+	Delay(500);
 }

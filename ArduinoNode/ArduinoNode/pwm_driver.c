@@ -57,11 +57,11 @@ void joystick_input(void)
 	int pwm_dutycycle = (int)(PWM->PWM_CH_NUM[5].PWM_CDTY);
 		if (P1000_data.joystick==0)
 		{
-			pwm_dutycycle+=250;
+			pwm_dutycycle+=150;
 			//printf("increased duty cycle to %d \n",pwm_dutycycle);
 		}
 		if (P1000_data.joystick==1){
-			pwm_dutycycle-=250;
+			pwm_dutycycle-=150;
 			//printf("decreased duty cycle to %d \n",pwm_dutycycle);
 		}
 		pwm_duty_update(pwm_dutycycle);

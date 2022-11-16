@@ -17,21 +17,21 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   6 .comment      00000059  00000000  00000000  0002045d  2**0
                   CONTENTS, READONLY
-  7 .debug_info   00006db7  00000000  00000000  000204b6  2**0
+  7 .debug_info   00006db6  00000000  00000000  000204b6  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_abbrev 00001307  00000000  00000000  0002726d  2**0
+  8 .debug_abbrev 00001307  00000000  00000000  0002726c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_loc    00001226  00000000  00000000  00028574  2**0
+  9 .debug_loc    00001226  00000000  00000000  00028573  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_aranges 00000298  00000000  00000000  0002979a  2**0
+ 10 .debug_aranges 00000298  00000000  00000000  00029799  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000208  00000000  00000000  00029a32  2**0
+ 11 .debug_ranges 00000208  00000000  00000000  00029a31  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_macro  00012c86  00000000  00000000  00029c3a  2**0
+ 12 .debug_macro  00012c86  00000000  00000000  00029c39  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_line   0000530f  00000000  00000000  0003c8c0  2**0
+ 13 .debug_line   0000530f  00000000  00000000  0003c8bf  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_str    00055697  00000000  00000000  00041bcf  2**0
+ 14 .debug_str    00055697  00000000  00000000  00041bce  2**0
                   CONTENTS, READONLY, DEBUGGING
  15 .debug_frame  000008bc  00000000  00000000  00097268  2**2
                   CONTENTS, READONLY, DEBUGGING
@@ -924,14 +924,14 @@ int main(void)
 	int no_goal_counter = 0;
    805a2:	9200      	str	r2, [sp, #0]
 
-	int16_t p_factor = 100; //45 P only stable
-	int16_t i_factor = 2; 
+	int16_t p_factor = 20; //45 P only stable START 100
+	int16_t i_factor = 1; 
 	int16_t d_factor = 0;
 
 	pid_Init(p_factor, i_factor, d_factor, &pid);	
    805a4:	4b16      	ldr	r3, [pc, #88]	; (80600 <main+0x98>)
-   805a6:	2102      	movs	r1, #2
-   805a8:	2064      	movs	r0, #100	; 0x64
+   805a6:	2101      	movs	r1, #1
+   805a8:	2014      	movs	r0, #20
    805aa:	4c16      	ldr	r4, [pc, #88]	; (80604 <main+0x9c>)
    805ac:	47a0      	blx	r4
 	
@@ -957,14 +957,14 @@ int main(void)
 		move_to_setpoint();
    805be:	4b15      	ldr	r3, [pc, #84]	; (80614 <main+0xac>)
    805c0:	4798      	blx	r3
-		
+		//printf(" Button: %d \n",P1000_data.joystick_button);
 		if(P1000_data.joystick_button == 1)
    805c2:	4b15      	ldr	r3, [pc, #84]	; (80618 <main+0xb0>)
    805c4:	68db      	ldr	r3, [r3, #12]
    805c6:	2b01      	cmp	r3, #1
    805c8:	d1f3      	bne.n	805b2 <main+0x4a>
 		{
-			//printf("recieved CAN message %d \n",1);
+
 			solenoid_impulse();
    805ca:	4b14      	ldr	r3, [pc, #80]	; (8061c <main+0xb4>)
    805cc:	4798      	blx	r3
@@ -1273,7 +1273,7 @@ void move_to_setpoint()
    80796:	2c00      	cmp	r4, #0
    80798:	db1e      	blt.n	807d8 <move_to_setpoint+0xd0>
 	 	
-	speed = ((0xFFF - 0x580) * ((float) motor_input / 100.0)) + 0x580; //min 580
+	speed = ((0xFFF - 0x450) * ((float) motor_input / 100.0)) + 0x450; //min 580
    8079a:	4620      	mov	r0, r4
    8079c:	4b17      	ldr	r3, [pc, #92]	; (807fc <move_to_setpoint+0xf4>)
    8079e:	4798      	blx	r3
@@ -1322,7 +1322,7 @@ void move_to_setpoint()
    807e8:	00000000 	.word	0x00000000
    807ec:	40c0cc00 	.word	0x40c0cc00
    807f0:	00000000 	.word	0x00000000
-   807f4:	40a4fe00 	.word	0x40a4fe00
+   807f4:	40a75e00 	.word	0x40a75e00
    807f8:	20000464 	.word	0x20000464
    807fc:	000817ad 	.word	0x000817ad
    80800:	000810dd 	.word	0x000810dd
@@ -1334,7 +1334,7 @@ void move_to_setpoint()
    80818:	20000450 	.word	0x20000450
    8081c:	0008090d 	.word	0x0008090d
    80820:	400e1400 	.word	0x400e1400
-   80824:	40960000 	.word	0x40960000
+   80824:	40914000 	.word	0x40914000
    80828:	00080e21 	.word	0x00080e21
    8082c:	000815a9 	.word	0x000815a9
    80830:	400c8000 	.word	0x400c8000
@@ -1454,8 +1454,9 @@ void solenoid_impulse()
    808c8:	f443 5380 	orr.w	r3, r3, #4096	; 0x1000
    808cc:	6323      	str	r3, [r4, #48]	; 0x30
 	
-	Delay(270);
-   808ce:	f44f 7087 	mov.w	r0, #270	; 0x10e
+	//Delay(270);
+	Delay(500);
+   808ce:	f44f 70fa 	mov.w	r0, #500	; 0x1f4
    808d2:	47a8      	blx	r5
    808d4:	bd38      	pop	{r3, r4, r5, pc}
    808d6:	bf00      	nop
@@ -2250,22 +2251,22 @@ void joystick_input(void)
    80cfe:	681b      	ldr	r3, [r3, #0]
    80d00:	b903      	cbnz	r3, 80d04 <joystick_input+0x10>
 		{
-			pwm_dutycycle+=250;
-   80d02:	30fa      	adds	r0, #250	; 0xfa
+			pwm_dutycycle+=150;
+   80d02:	3096      	adds	r0, #150	; 0x96
 			//printf("increased duty cycle to %d \n",pwm_dutycycle);
 		}
 		if (P1000_data.joystick==1){
    80d04:	2b01      	cmp	r3, #1
    80d06:	d002      	beq.n	80d0e <joystick_input+0x1a>
-			pwm_dutycycle-=250;
+			pwm_dutycycle-=150;
 			//printf("decreased duty cycle to %d \n",pwm_dutycycle);
 		}
 		pwm_duty_update(pwm_dutycycle);
    80d08:	4b04      	ldr	r3, [pc, #16]	; (80d1c <joystick_input+0x28>)
    80d0a:	4798      	blx	r3
    80d0c:	bd08      	pop	{r3, pc}
-			pwm_dutycycle-=250;
-   80d0e:	38fa      	subs	r0, #250	; 0xfa
+			pwm_dutycycle-=150;
+   80d0e:	3896      	subs	r0, #150	; 0x96
    80d10:	e7fa      	b.n	80d08 <joystick_input+0x14>
    80d12:	bf00      	nop
    80d14:	40094000 	.word	0x40094000

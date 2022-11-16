@@ -1,3 +1,4 @@
+/*
 #include "test.h"
 #include "ATmega162_driver.h"
 #include "ADC_driver.h"
@@ -9,7 +10,7 @@
 void pin_test()
 {
 	set_bit(DDRB, 0);
-	/* Replace with your application code */
+	/ * Replace with your application code * /
 	while (1)
 	{
 		set_bit(PORTB, 0);
@@ -35,10 +36,10 @@ void uart_test()
 		printf("%c", test);
 		_delay_ms(500);
 		
-		/*
+		/ *
 		test = USART_RX();
 		USART_TX(test);
-		*/
+		* /
 	}
 }
 
@@ -140,12 +141,12 @@ void ADC_test()
 		xmem_write(0x00, 0x1400);
 		while(1)
 		{
-			/* Interrupt handling */
+			/ * Interrupt handling * /
 			//ADC_read();
 			//xmem_write(0x00, 0x1400);
 		}
 }
-
+/ *
 uint8_t ADC_data [4];
 void joystick_test()
 {
@@ -237,7 +238,6 @@ void oled_print_test()
 extern int y_arrow;
 extern int page_arrow;
 
-/*
 	uint8_t size_arrow;
 	
 	float x_per;
@@ -260,7 +260,7 @@ extern int page_arrow;
 	ADC_init();
 	
 	sei(); // Enable all interrupt
-	*/
+	
 void oled_movement_test()
 {
 		uint8_t size_arrow;
@@ -363,19 +363,19 @@ void test_CAN()
 	message2.data[0] = 'B';
 	message2.data[1] = 'Y';
 	message2.data[2] = 'E';
-	/*
+	/ *
 	char data;
 	data = mcp2515_read_status();
 	
 	printf("status before send 0x%02X \n", data);
-	*/
+	* /
 		while(1){
 			can_message_send(&message2);
 			_delay_ms(100);
 			
 			can_message_send(&message1);
 			_delay_ms(100);
-				/*
+				/ *
 				can_message read_message;
 				
 				read_message = can_data_recieve();
@@ -385,7 +385,8 @@ void test_CAN()
 				
 				//printf("status after read 0x%02X \n", data);
 				printf("message data read %c%c%c %d\n", read_message.data[0], read_message.data[1], read_message.data[2], read_message.id);
-				*/
+				* /
 		}
 
 }
+*/

@@ -158,10 +158,117 @@ void oled_print_arrow (int row , int col, uint8_t clear)
 	}
 }
 
+extern int joystick_button_flag;
+uint8_t ADC_data [4];
 
-
-void oled_menu()
+void oled_menu(float *x_per, float *y_per, pos_t *position, int *left_pos, int *right_pos, uint8_t* ADC_data)
 {
+	int page_arrow = 0;
+	int y_arrow = 0;
+	uint8_t size_arrow =1;
+	oled_init();
+	oled_reset();
 	
+	oled_home();
+	oled_reset();
+	
+	go_to_page(1);
+	go_to_col(10);
+	oled_print("Welcome to ");
+	go_to_page(2);
+	go_to_col(10);
+	oled_print("group 31");
+	go_to_page(3);
+	go_to_col(10);
+	oled_print("Pong game.");
+	go_to_page(4);
+	go_to_col(30);
+	oled_print("Start game");
+	
+	oled_print_arrow(page_arrow, y_arrow, 0);
+	
+	while ((!joystick_button_flag) || !(page_arrow == 4))
+	{
+		
+		joystick_analog_position(x_per, y_per, ADC_data);
+		*position = pos_read(x_per, y_per);
+		
+		
+		printf("joystick button flag: %d page arrow: %d \n", joystick_button_flag, page_arrow);
+		switch( *position)
+		{
+			case UP:
+			//printf("UP\n");
+			oled_print_arrow(page_arrow, y_arrow, 1);
+			page_arrow -= size_arrow;
+			if(page_arrow < 0) page_arrow = 7;
+			oled_print_arrow(page_arrow, y_arrow, 0);
+			break;
+			case DOWN:
+			//printf("DOWN\n");
+			oled_print_arrow(page_arrow, y_arrow, 1);
+			page_arrow += size_arrow;
+			if(page_arrow > 7) page_arrow = 0;
+			oled_print_arrow(page_arrow, y_arrow, 0);
+			break;
+			
+			/*
+			case RIGHT:
+			//printf("RIGHT\n");
+			
+			oled_print_arrow(page_arrow, y_arrow, 1);
+			y_arrow += 5;
+			oled_print_arrow(page_arrow, y_arrow, 0);
+			break;
+			
+			case LEFT:
+			
+			//printf("LEFT\n");
+			oled_print_arrow(page_arrow, y_arrow, 1);
+			y_arrow -= 5;
+			oled_print_arrow(page_arrow, y_arrow, 0);
+			break;
+			*/
+			case NEUTRAL:
+			//printf("NEUTRAL\n");
+			break;
+			default:
+			printf("Not working ?\n");
+			break;
+		}
+		
+		//_delay_ms(100);
+		
+		//_delay_ms(5);
+		joystick_button_flag=0;
+
+	}
+	joystick_button_flag = 0;
+	printf("exiting while loop \n");
+	oled_home();
+	oled_reset();
+	go_to_page(3);
+	go_to_col(30);
+	oled_print("Good luck :)");
+		go_to_page(4);
+		go_to_col(30);
+		oled_print("3         ");
+		go_to_page(3);
+		go_to_col(30);
+		oled_print("Good luck :)");
+			go_to_page(5);
+			go_to_col(30);
+			oled_print("2         ");
+			go_to_page(3);
+			go_to_col(30);
+			oled_print("Good luck :)");
+				go_to_page(6);
+				go_to_col(30);
+				oled_print("1         ");
+				go_to_page(3);
+				go_to_col(30);
+				oled_print("Good luck :)");
+	//_delay_ms(100);
+	xmem_write(0xae, 0x1000); // display off
 }
 	

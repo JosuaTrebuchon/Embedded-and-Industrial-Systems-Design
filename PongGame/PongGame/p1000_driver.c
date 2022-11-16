@@ -8,19 +8,11 @@
 #include "p1000_driver.h" 
 
 float x_joystick_calibrate=128; 
-float y_joystick_calibrate=128; void joystick_analog_position(float* x_per, float* y_per, uint8_t* ADC_data, int* calibrated)
+float y_joystick_calibrate=128; void joystick_analog_position(float* x_per, float* y_per, uint8_t* ADC_data)
 {
 	ADC_read(ADC_data);
 	xmem_write(0x00, 0x1400);
-	/*
-	if(!(*calibrated))
-	{
-		x_joystick_calibrate = ADC_data[3];
-		y_joystick_calibrate = ADC_data[0];
-		
-		*calibrated = 1;
-	}
-	*/
+
 
 	*x_per = ((float)ADC_data[3]*(float)(200.0/255.0)-100);
 	*y_per = ((float)ADC_data[0]*(float)(200.0/255.0)-100);
