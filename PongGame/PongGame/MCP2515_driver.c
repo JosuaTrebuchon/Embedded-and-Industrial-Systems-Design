@@ -6,7 +6,6 @@
  * @return uint8_t 
  */
 uint8_t mcp2515_init() {
-  // stdout = &mystdout;
   char value;
   spi_init();      // Initialize SPI
   mcp2515_reset(); // Send reset - command
@@ -39,22 +38,22 @@ uint8_t mcp2515_init() {
 /**
  * @brief 
  * 
- * @param addr 
- * @return char 
+ * @param addr  :Address
+ * @return char :Can message
  */
 char mcp2515_read(unsigned char addr) {
+  /*Chip select*/
   clear_bit(PORTB, PB4);
 
-  /*read command*/
+  /*SPI transmit*/
   spi_transmit(MCP_READ);
-
-  /*address*/
   spi_transmit(addr);
-
   spi_transmit(0x00);
-
+  
+  /*CAN controller read data*/
   char data = spi_slave_receive();
-
+  
+  /*Chip de-select*/
   set_bit(PORTB, PB4);
 
   return data;
@@ -63,56 +62,57 @@ char mcp2515_read(unsigned char addr) {
 /**
  * @brief 
  * 
- * @param addr 
- * @param data 
+ * @param addr  :Address
+ * @param data  :Data
  */
 void mcp2515_write(unsigned char addr, unsigned char data) {
+  /*Chip select*/
   clear_bit(PORTB, PB4);
 
-  /*write command*/
+  /*SPI transmit*/
   spi_transmit(MCP_WRITE);
-
-  /*address*/
   spi_transmit(addr);
-
   spi_transmit(data);
 
+  /*Chip de-select*/
   set_bit(PORTB, PB4);
 }
 
 /**
  * @brief 
  * 
- * @param transmit_buffer 
+ * @param transmit_buffer :Transmit buffer
  */
 */
 void mcp2515_request_to_send(unsigned char transmit_buffer)
-/*	#define MCP_RTS_TX0		0x81
-        #define MCP_RTS_TX1		0x82
-        #define MCP_RTS_TX2		0x84
-        #define MCP_RTS_ALL		0x87
-*/
 {
+  /*Chip select*/
   clear_bit(PORTB, PB4);
-
+  
+  /*SPI transmit*/
   spi_transmit(transmit_buffer);
 
+  /*Chip de-select*/
   set_bit(PORTB, PB4);
 }
 
 /**
  * @brief 
  * 
- * @return char 
+ * @return char :CAN controller status register
  */
 char mcp2515_read_status() {
+  /*Chip select*/
   clear_bit(PORTB, PB4);
-
+  
+  /*SPI transmit*/
   spi_transmit(MCP_READ_STATUS);
   spi_transmit(0x00);
 
+  /*Chip de-select*/
   set_bit(PORTB, PB4);
 
+  /*CAN caontroller status*/
   char data;
   data = spi_slave_receive();
 
@@ -122,25 +122,27 @@ char mcp2515_read_status() {
 /**
  * @brief 
  * 
- * @param addr 
- * @param mask 
- * @param data 
+ * @param addr :Address
+ * @param mask :Bit modify mask
+ * @param data :Bit modify data
  */
-void mcp2515_bit_modify(unsigned char addr, unsigned char mask,
-                        unsigned char data) {
+void mcp2515_bit_modify(unsigned char addr, unsigned char mask, unsigned char data) {
+  /*Chip select*/
   clear_bit(PORTB, PB4);
 
+  /*SPI transmit*/
   spi_transmit(MCP_BITMOD);
   spi_transmit(addr);
   spi_transmit(mask);
   spi_transmit(data);
 
+  /*Chip de-select*/
   set_bit(PORTB, PB4);
 }
 
 /**
  * @brief 
- * 
+ *  Reset CAN controller
  */
 void mcp2515_reset() {
   clear_bit(PORTB, PB4);
