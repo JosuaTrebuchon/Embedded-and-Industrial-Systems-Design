@@ -2,7 +2,7 @@
 
 /**
  * @brief 
- * 
+ * Set Registers for enabling PWM for use as clock signal
  */
 void PWM_Init() {
   set_bit(DDRD, DDD5);
@@ -51,7 +51,6 @@ void ADC_read(uint8_t *ADC_data) {
 
   int channels = 4;
 
-  // uint8_t ADC_data [4]= {0,0,0,0};
 
   _delay_ms(t_BRD);
 
@@ -60,6 +59,4 @@ void ADC_read(uint8_t *ADC_data) {
     _delay_ms(t_RDL + t_RDH);
   }
 
-  // printf( "ADC_data[%d] = %d, ADC_data[%d] = %d\n", 0, (int)ADC_data [0],3,
-  // (int)ADC_data [3]);
 }
