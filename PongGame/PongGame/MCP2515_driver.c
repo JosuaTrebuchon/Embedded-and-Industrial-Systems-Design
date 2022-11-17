@@ -83,7 +83,7 @@ void mcp2515_write(unsigned char addr, unsigned char data) {
  * 
  * @param transmit_buffer :Transmit buffer
  */
-*/
+
 void mcp2515_request_to_send(unsigned char transmit_buffer)
 {
   /*Chip select*/
