@@ -12,9 +12,9 @@ float y_joystick_calibrate = 128;
 /**
  * @brief 
  * 
- * @param x_per 
- * @param y_per 
- * @param ADC_data 
+ * @param x_per    :x percentage 
+ * @param y_per    :y percentage
+ * @param ADC_data :ADC data
  */
 void joystick_analog_position(float *x_per, float *y_per, uint8_t *ADC_data) {
   ADC_read(ADC_data);
@@ -27,15 +27,13 @@ void joystick_analog_position(float *x_per, float *y_per, uint8_t *ADC_data) {
 /**
  * @brief 
  * 
- * @param left_per 
- * @param right_per 
- * @param ADC_data 
+ * @param x_per    :x percentage 
+ * @param y_per    :y percentage
+ * @param ADC_data :ADC data
  */
 void slider_position(int *left_per, int *right_per, uint8_t *ADC_data) {
   ADC_read(ADC_data);
   xmem_write(0x00, 0x1400);
-  // printf( "ADC_data[%d] = %d, ADC_data[%d] = %d\n", 1, (int)ADC_data [1],2,
-  // (int)ADC_data [2]);
   *left_per = ADC_data[1];
   *right_per = ADC_data[2];
 }
@@ -43,9 +41,9 @@ void slider_position(int *left_per, int *right_per, uint8_t *ADC_data) {
 /**
  * @brief 
  * 
- * @param x_per 
- * @param y_per 
- * @return pos_t 
+ * @param x_per  :x percentage 
+ * @param y_per  :y percentage
+ * @return pos_t :joystick position enum
  */
 pos_t pos_read(float *x_per, float *y_per) {
   if ((*x_per) >= 70) {
