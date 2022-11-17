@@ -3,13 +3,10 @@
 /**
  * @brief 
  * 
- * @param message 
+ * @param message :CAN message struct
  */
 void can_message_send(can_message *message) {
-  /*
-  mcp2515_write(TXB0SIDL, (message->id<<5);
-  mcp2515_write(TXB0SIDH, (message->id & 0x0F));
-  */
+ 
   mcp2515_write(TXB0DLC, message->data_length);
 
   mcp2515_bit_modify(TXB0SIDL, 0xE0, message->id << 5);
@@ -21,14 +18,13 @@ void can_message_send(can_message *message) {
 
   mcp2515_request_to_send(MCP_RTS_TX0);
 
-  // printf("end of main");
   // message transmitted when TXBnCTRL.TXREQ cleared and CANINTF.TXnIF set
 }
 
 /**
  * @brief 
  * 
- * @return can_message 
+ * @return can_message  :CAN message struct
  */
 can_message can_data_recieve() {
   can_message message;
