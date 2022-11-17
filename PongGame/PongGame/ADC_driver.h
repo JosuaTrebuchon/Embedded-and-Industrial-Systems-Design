@@ -12,7 +12,5 @@ void ADC_init(void);
 
 void ADC_read(uint8_t *ADC_data);
 
-// uint8_t adc_read(uint8_t channel); //volatile
-
-void adc_calibrate(); /*enum pos_t {LEFT, RIGHT, UP, DOWN, NEUTRAL}; pos_t
-                         pos_read(void);*/
+void adc_calibrate(); 
+*/
