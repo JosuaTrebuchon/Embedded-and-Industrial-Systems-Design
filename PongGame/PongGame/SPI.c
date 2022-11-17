@@ -15,7 +15,7 @@ void spi_init(void) {
 /**
  * @brief 
  * 
- * @param cData 
+ * @param cData :Transmit character
  */
 void spi_transmit(char cData) {
   /* Start transmission */
@@ -39,12 +39,11 @@ void spi_slave_init(void) {
 /**
  * @brief 
  * 
- * @return char 
+ * @return char :recive character
  */
 char spi_slave_receive(void) {
   /* Wait for reception complete */
-  while (!(SPSR & (1 << SPIF)))
-    ;
+  while (!(SPSR & (1 << SPIF)));
   /* Return data register */
   return SPDR;
 }
