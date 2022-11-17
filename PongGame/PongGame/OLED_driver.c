@@ -8,12 +8,6 @@ void oled_init() {
 
   xmem_write(0xae, 0x1000); // display off
   xmem_write(0xa1, 0x1000); // segment remap
-
-  /*
-  xmem_write(0xD3, 0x1000);
-  xmem_write(0x00, 0x1000);
-  */
-
   xmem_write(0xda, 0x1000); // common pads hardware: alternative
   xmem_write(0x12, 0x1000);
   xmem_write(0xc8, 0x1000); // common output scan direction:com63~com0
@@ -33,18 +27,13 @@ void oled_init() {
   xmem_write(0x00, 0x1000);
   xmem_write(0xa4, 0x1000); // out follows RAM content
   xmem_write(0xa6, 0x1000); // set normal display
-
   xmem_write(0x00, 0x1000);
-  // xmem_write(0x10, 0x1000);
-  // xmem_write(0x52, 0x1000);
-  //
-
   xmem_write(0xaf, 0x1000); // display on
 }
 
 /**
  * @brief 
- * 
+ * Reset oled
  */
 void oled_reset() {
 
@@ -68,18 +57,10 @@ void oled_reset() {
   }
 }
 
-/*
-void oled_reset()
-{
-        xmem_write(0xa7, 0x1000);
-        xmem_write(0xa6, 0x1000);
-        
-
-}*/
 /**
  * @brief 
  * 
- * @param n 
+ * @param n :Character to be printed on oled
  */
 void write_char(char n) {
   unsigned char segment[8] = {0};
@@ -96,11 +77,15 @@ void write_char(char n) {
  */
 void oled_home() {
   xmem_write(0xb0, 0x1000);
-
   xmem_write(0x00, 0x1000);
   xmem_write(0x10, 0x1000);
 }
 
+/**
+ * @brief 
+ * 
+ * @param i :page
+ */
 void go_to_page(int i) // 0-7
 {
   uint8_t pos = 0xb0 + i;
@@ -110,28 +95,20 @@ void go_to_page(int i) // 0-7
 /**
  * @brief 
  * 
- * @param i 
+ * @param i :column 
  */
 void go_to_col(uint8_t i) // 0-127
 {
-  /*
-          uint8_t lower_start;
-          uint8_t upper;
-  */
 
-  // lower_start = (i & 0x0f);
-  // upper = ((i >> 4) & 0x0f);
   xmem_write((i & 0x0f), 0x1000);
   xmem_write((0x10 + ((i >> 4) & 0x0f)), 0x1000);
-  /*
-          xmem_write(0x0D, 0x1000);
-          xmem_write(0x17, 0x1000);*/
+
 }
 
 /**
  * @brief 
  * 
- * @param i 
+ * @param i :Page to cleared 
  */
 void clear_line(int i) {
   for (int col = 0; col < 128; col++) {
@@ -144,7 +121,7 @@ void clear_line(int i) {
 /**
  * @brief 
  * 
- * @param word 
+ * @param word :String to be printed on oled
  */
 void oled_print(char *word) {
   int i = 0;
@@ -157,9 +134,9 @@ void oled_print(char *word) {
 /**
  * @brief 
  * 
- * @param row 
- * @param col 
- * @param clear 
+ * @param row   :Row 
+ * @param col   :Collumn
+ * @param clear :Clear or Print flag
  */
 void oled_print_arrow(int row, int col, uint8_t clear) {
   go_to_col(col);
@@ -183,6 +160,16 @@ void oled_print_arrow(int row, int col, uint8_t clear) {
 extern int joystick_button_flag;
 uint8_t ADC_data[4];
 
+/**
+ * @brief 
+ * 
+ * @param x_per     :x percentage
+ * @param y_per     :y percentage
+ * @param position  :joystick position 
+ * @param left_pos  :left slider position
+ * @param right_pos :right slider position
+ * @param ADC_data  :ADC data 
+ */
 void oled_menu(float *x_per, float *y_per, pos_t *position, int *left_pos,
                int *right_pos, uint8_t *ADC_data) {
   int page_arrow = 0;
@@ -190,10 +177,10 @@ void oled_menu(float *x_per, float *y_per, pos_t *position, int *left_pos,
   uint8_t size_arrow = 1;
   oled_init();
   oled_reset();
-
+  
+  //Start of game Menu Screen
   oled_home();
   oled_reset();
-
   go_to_page(1);
   go_to_col(10);
   oled_print("Welcome to ");
@@ -206,9 +193,9 @@ void oled_menu(float *x_per, float *y_per, pos_t *position, int *left_pos,
   go_to_page(4);
   go_to_col(30);
   oled_print("Start game");
-
   oled_print_arrow(page_arrow, y_arrow, 0);
-
+  
+  //While until start game is selected
   while ((!joystick_button_flag) || !(page_arrow == 4)) {
 
     joystick_analog_position(x_per, y_per, ADC_data);
@@ -255,17 +242,14 @@ void oled_menu(float *x_per, float *y_per, pos_t *position, int *left_pos,
       // printf("NEUTRAL\n");
       break;
     default:
-      printf("Not working ?\n");
+      printf("Default Case\n");
       break;
     }
-
-    //_delay_ms(100);
-
-    //_delay_ms(5);
     joystick_button_flag = 0;
   }
   joystick_button_flag = 0;
-  printf("exiting while loop \n");
+  
+  //Game starting animation
   oled_home();
   oled_reset();
   go_to_page(3);
@@ -289,6 +273,5 @@ void oled_menu(float *x_per, float *y_per, pos_t *position, int *left_pos,
   go_to_page(3);
   go_to_col(30);
   oled_print("Good luck :)");
-  //_delay_ms(100);
   xmem_write(0xae, 0x1000); // display off
 }
