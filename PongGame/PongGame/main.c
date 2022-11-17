@@ -65,36 +65,37 @@ int main(void) {
 
   stdout = &mystdout;
 
+  //Initialization
   USART_Init(UBRR);
   xmem_init();
   PWM_Init();
   ADC_init();
   mcp2515_init();
   pushButton_init();
-
   sei();
 
-  // joystick_button_flag=0;
   float x_per;
   float y_per;
   pos_t position;
   position = 0;
   (x_per) = 0;
   (y_per) = 0;
-
   can_message P1000_msg;
-
   int left_pos;
   int right_pos;
   (left_pos) = 0;
   (right_pos) = 0;
-
+  
+  //Oled function for start of game screen
   oled_menu(&x_per, &y_per, &position, &left_pos, &right_pos, ADC_data);
+  
   while (1) {
+    //P1000 board controlls
     joystick_analog_position(&x_per, &y_per, ADC_data);
     position = pos_read(&x_per, &y_per);
-
     slider_position(&left_pos, &right_pos, ADC_data);
+    
+    //CAN message build
     P1000_msg.id = 1;
     P1000_msg.data_length = 4;
     P1000_msg.data[0] = position;
@@ -103,8 +104,11 @@ int main(void) {
     P1000_msg.data[3] = joystick_button_flag;
     joystick_button_flag = 0;
     printf("setpoint: %d button: %d \n", P1000_msg.data[1], P1000_msg.data[3]);
-
+    
+    //Send CAN message
     can_message_send(&P1000_msg);
+    
+    //Update ADC
     if (adc_read_flag) {
       ADC_read(ADC_data);
       adc_read_flag = 0;
