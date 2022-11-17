@@ -3,7 +3,7 @@
 /**
  * @brief 
  * 
- * @param ubrr 
+ * @param ubrr :USART Band Rate
  */
 void USART_Init(unsigned int ubrr) {
   /* Set baud rate */
@@ -22,7 +22,7 @@ void USART_Init(unsigned int ubrr) {
 /**
  * @brief 
  * 
- * @param data 
+ * @param data  :Data
  */
 void USART_TX(unsigned char data) {
   while (!(UCSR0A & (1 << UDRE0)))
@@ -60,19 +60,15 @@ int uart_putchar(char c, FILE *stream) {
 }
 
 void xmem_init(void) {
-  // set_bit(SFIOR, XMM2);
-  // clear_bit(SFIOR, XMM1);
-  // clear_bit(SFIOR, XMM0);
-  // set_bit(MCUCR, SRE);
-  MCUCR |= (1 << SRE); // THIS MFER
+  MCUCR |= (1 << SRE); 
   SFIOR |= (1 << XMM2);
 }
 
 /**
  * @brief 
  * 
- * @param data 
- * @param addr 
+ * @param data :DATA
+ * @param addr :ADRESS
  */
 void xmem_write(uint8_t data, uint16_t addr) {
 
@@ -87,8 +83,8 @@ void xmem_write(uint8_t data, uint16_t addr) {
 /**
  * @brief 
  * 
- * @param addr 
- * @return uint8_t 
+ * @param addr      :Adress
+ * @return uint8_t  :Value at adress
  */
 uint8_t xmem_read(uint16_t addr) {
   volatile char *ext_mem = (char *)BASE_ADDRESS;
@@ -98,7 +94,7 @@ uint8_t xmem_read(uint16_t addr) {
 
 /**
  * @brief 
- * 
+ *  Initializes push buttons
  */
 void pushButton_init() {
   clear_bit(
@@ -115,7 +111,7 @@ void pushButton_init() {
 
 /**
  * @brief 
- * 
+ *  initializes interupt from can controller
  */
 void interrupt_MCP2515_init() {
   clear_bit(DDRD, DDD3); // set PD3 as Input to use the INT1 Interrupt for CAN
