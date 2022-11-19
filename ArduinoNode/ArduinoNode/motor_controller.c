@@ -25,7 +25,7 @@ void slider_open_loop() {
 }
 
 /**
- * @brief 
+ * @brief Make motor spin all the way to far wall, then reset encoder to 0 it out
  * 
  */
 void init_motor_position() {
@@ -43,9 +43,9 @@ void init_motor_position() {
 }
 
 /**
- * @brief 
+ * @brief Delay function for Arduino Due
  * 
- * @param num 
+ * @param num Length of delay
  */
 void Delay(int num) {
   volatile float f = 1.0f;
@@ -56,7 +56,7 @@ void Delay(int num) {
 }
 
 /**
- * @brief 
+ * @brief Enable all pins for motor
  * 
  */
 void motor_init() {
@@ -94,9 +94,9 @@ void motor_init() {
 }
 
 /**
- * @brief 
+ * @brief Read the position of motor from encoder
  * 
- * @return uint16_t 
+ * @return uint16_t Motor position
  */
 uint16_t read_encoder() {
   uint16_t encoder = 0;
@@ -126,7 +126,7 @@ uint16_t read_encoder() {
 }
 
 /**
- * @brief 
+ * @brief Move motor to desired position
  * 
  */
 void move_to_setpoint() {
@@ -181,7 +181,7 @@ void move_to_setpoint() {
 }
 
 /**
- * @brief 
+ * @brief Zero out encoder
  * 
  */
 void reset_encoder(void) {
@@ -208,7 +208,7 @@ void solenoid_init() {
 }
 
 /**
- * @brief 
+ * @brief Engage solenoid to shoot ball
  * 
  */
 void solenoid_impulse() {

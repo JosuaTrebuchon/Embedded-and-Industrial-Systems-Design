@@ -3,7 +3,7 @@
 P1000_DATA P1000_data;
 
 /**
- * @brief 
+ * @brief Set registers on Arduino to use PWN
  * 
  */
 void peripheral_init_pwm(){
@@ -55,7 +55,7 @@ void pwm_duty_update(int PWM_dutycycle_tick_NEW)
 }
 
 /**
- * @brief 
+ * @brief Take in changes in joystick output, update PWM
  * 
  */
 void joystick_input(void)

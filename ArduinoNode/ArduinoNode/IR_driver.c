@@ -1,7 +1,7 @@
 #include "IR_driver.h"
 
 /**
- * @brief 
+ * @brief Set peripheral pin and enable clock to use IR on Arduino due
  * 
  */
 void peripheral_init_adc() {
@@ -16,10 +16,6 @@ void peripheral_init_adc() {
   PMC->PMC_PCER1 |= PMC_PCER1_PID37;
 }
 
-/**
- * @brief 
- * 
- */
 void ADC_init(void) {
   /*Reset ADC*/
   ADC->ADC_CR |= ADC_CR_SWRST;
@@ -42,7 +38,7 @@ void ADC_init(void) {
 }
 
 /**
- * @brief 
+ * @brief Returns 0 if goal, 1 if not
  * 
  * @return int 
  */
@@ -52,15 +48,15 @@ int IR_read(void) {
   if (adc_out < 200) {
     return 0;
   }
-  // printf("no goal \n");
+  
   return 1;
 }
 
 /**
- * @brief 
+ * @brief Keeps track of score. Delay added to prevent multiple goals in a row
  * 
- * @param score 
- * @param no_goal_counter 
+ * @param score Total score
+ * @param no_goal_counter Counter must be over 10 iterations for next goal to count
  */
 void check_for_score(int *score, int *no_goal_counter) {
 

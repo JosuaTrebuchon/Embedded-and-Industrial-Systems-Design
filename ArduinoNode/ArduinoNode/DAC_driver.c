@@ -1,7 +1,7 @@
 #include "DAC_driver.h"
 
 /**
- * @brief 
+ * @brief Set registers to enable DAC on Arduino Due
  * 
  */
 void DACC_init(void) {
